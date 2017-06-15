@@ -2,7 +2,7 @@
 
 namespace tagadvance\gilligan\cryptography;
 
-interface Crypt {
+interface Cryptographer {
 	
 	function encrypt(string $data): string;
 	
