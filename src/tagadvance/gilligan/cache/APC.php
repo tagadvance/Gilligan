@@ -9,7 +9,7 @@ Extensions::getInstance ()->requires ( 'apc' );
 
 /**
  *
- * This is class designed to make APC access more convienient, e.g.
+ * This is class designed to make APC access more convenient, e.g.
  * <code>
  * $apc = new Apc();
  * $apc->foo = 'bar';
