@@ -1,6 +1,6 @@
 <?php
 
-namespace tagadvance\gilligan\crypt;
+namespace tagadvance\gilligan\cryptography;
 
 use PHPUnit\Framework\TestCase;
 use tagadvance\gilligan\security\Hash;
