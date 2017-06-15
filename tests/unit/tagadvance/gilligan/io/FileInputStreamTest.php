@@ -33,9 +33,6 @@ class FileInputStreamTest extends TestCase {
 		} finally {
 			$stream->close ();
 		}
-		
-		$contents = $stream->getContents ();
-		$this->assertEquals ( $expected = $string, $actual = $contents );
 	}
 	
 	function testGetContents() {
