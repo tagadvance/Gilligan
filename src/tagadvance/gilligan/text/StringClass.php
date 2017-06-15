@@ -327,7 +327,7 @@ class StringClass {
 		return new self ( $result );
 	}
 
-	function __toString() {
+	function __toString(): string {
 		return $this->string;
 	}
 
