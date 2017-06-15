@@ -4,24 +4,46 @@ namespace tagadvance\gilligan\cache;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * 
+ * @author Tag <tagadvance+gilligan@gmail.com>
+ */
 class APCTest extends TestCase {
 	
-	function test() {
-		$apc = new APC();
+	private $apc;
+	
+	function setUp() {
+		$this->apc = new APC ();
+		$this->apc->clear ();
+	}
+	
+	function testSetAndGet() {
+		$expected = 'bar';
+		$this->apc->foo = $expected;
+		$actual = $this->apc->foo;
+		$this->assertEquals ( $expected, $actual );
+	}
+	
+	function testIsset() {
+		$expected = false;
+		$actual = isset ( $this->apc->foo );
+		$this->assertEquals ( $expected, $actual );
+	}
+	
+	function testUnset() {
+		$this->apc->foo = 'bar';
+		$expected = true;
+		$actual = isset ( $this->apc->foo );
+		$this->assertEquals ( $expected, $actual );
 		
-		$condition = isset($apc->foo);
-		$this->assertFalse($condition);
-		
-		$apc->foo = 'bar';
-		$condition = isset($apc->foo);
-		$this->assertTrue($condition);
-		
-		$string = $apc->__toString();
-		$this->assertNotNull($string);
-		
-		unset($apc->foo);
-		$condition = isset($apc->foo);
-		$this->assertFalse($condition);
+		unset ( $this->apc->foo );
+		$expected = false;
+		$actual = isset ( $this->apc->foo );
+		$this->assertEquals ( $expected, $actual );
+	}
+	
+	function tearDown() {
+		$this->apc->clear ();
 	}
 	
 }
