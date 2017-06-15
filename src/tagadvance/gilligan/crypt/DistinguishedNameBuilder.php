@@ -3,9 +3,6 @@
 namespace tagadvance\gilligan\crypt;
 
 /**
- * The Distinguished Name to be used in the certificate.
- * TODO: better examples!!!
- *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
 class DistinguishedNameBuilder {
