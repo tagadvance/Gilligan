@@ -1,6 +1,6 @@
 <?php
 
-namespace tagadvance\gilligan\crypt;
+namespace tagadvance\gilligan\cryptography;
 
 /**
  * OpenSSL Configuration build with fluent interface.
