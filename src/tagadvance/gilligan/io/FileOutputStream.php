@@ -2,7 +2,6 @@
 
 namespace tagadvance\gilligan\io;
 
-// TODO: fileinputstream
 class FileOutputStream extends ResourceOutputStream {
 
 	function __construct(File $file, $append = false) {
