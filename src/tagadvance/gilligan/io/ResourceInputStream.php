@@ -37,14 +37,13 @@ class ResourceInputStream implements InputStream {
 	 * @throws IOException
 	 * @see http://php.net/manual/en/function.stream-get-contents.php
 	 */
-	function getContents(int $maxLength = -1, int $offset = 0) {
+	function getContents(int $maxLength = -1, int $offset = 0): string {
 		$contents = stream_get_contents ( $this->handle, $maxLength, $offset );
 		if ($contents === false) {
 			throw new IOException ( __METHOD__ . ' failed' );
 		}
 		return $contents;
 	}
-	
 	
 	function seek(int $offset) {
 		$seek = fseek($this->handle, $offset);
