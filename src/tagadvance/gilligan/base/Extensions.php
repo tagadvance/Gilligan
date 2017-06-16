@@ -3,7 +3,16 @@
 namespace tagadvance\gilligan\base;
 
 /**
- *
+ * The idea behind <code>Extensions</code> is to fail fast. Instead of receiving a vague error about a missing function half way through the execution of a script, it will throw an {@link UnsupportedOperationException} with an easy to read error message.
+ * Example usage:
+ * 
+ * <code>
+ * namespace foo;
+ * 
+ * Extensions::getInstance ()->requires ( 'Core' );
+ * 
+ * class Bar {
+ * </code>
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
 class Extensions {
