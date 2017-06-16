@@ -14,6 +14,8 @@ class ConfigurationBuilder {
 	const CONFIG_RHEL = '/etc/pki/tls/openssl.cnf'; // RHEL + derivatives
 	const CONFIG_WINDOWS = null; // FIXME: windows
 	
+	private const MINIMUM_RECOMMENDED_KEY_SIZE = 2048;
+	
 	private $args;
 	
 	static function builder() {
@@ -78,6 +80,11 @@ class ConfigurationBuilder {
 	 * @return self
 	 */
 	function setPrivateKeyBits(int $bits): self {
+		if ($bits < self::MINIMUM_RECOMMENDED_KEY_SIZE) {
+			$message = sprintf ( 'minimum recommended key size is %d bits', self::MINIMUM_RECOMMENDED_KEY_SIZE );
+			trigger_error ( $message, E_USER_WARNING );
+		}
+		
 		$this->args ['private_key_bits'] = $bits;
 		return $this;
 	}
