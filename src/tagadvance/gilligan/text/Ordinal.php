@@ -33,7 +33,7 @@ class Ordinal {
 				self::RD 
 		];
 		$index = $n % 10;
-		return isset ( $suffixes [$index] ) ? $suffixes [$index] : self::TH;
+		return $suffixes [$index] ?? self::TH;
 	}
     
 }
