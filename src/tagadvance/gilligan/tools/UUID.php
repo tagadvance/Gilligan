@@ -3,9 +3,7 @@
 namespace tagadvance\gilligan\tools;
 
 /**
- * Licensed under Attribution 3.0 Unported.
- * 
- * Original author is Andrew Moore.
+ * The original author is Andrew Moore.
  * 
  * The following class generates VALID RFC 4211 COMPLIANT Universally Unique IDentifiers (UUID) version 3, 4 and 5.
  *
@@ -17,6 +15,8 @@ namespace tagadvance\gilligan\tools;
  *
  * @see https://creativecommons.org/licenses/by/3.0/
  * @see http://php.net/manual/en/function.uniqid.php#94959
+ * 
+ * @license <a href="https://creativecommons.org/licenses/by/3.0/">Attribution 3.0 Unported</a>
  */
 class UUID {	
 	
