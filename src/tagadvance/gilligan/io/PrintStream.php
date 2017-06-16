@@ -2,6 +2,8 @@
 
 namespace tagadvance\gilligan\io;
 
+use tagadvance\gilligan\base\UnsupportedOperationException;
+
 class PrintStream extends ResourceOutputStream {
 	
 	function __construct(OutputStream $delegatee) {
@@ -11,7 +13,7 @@ class PrintStream extends ResourceOutputStream {
 	/**
 	 * 
 	 * @param string $message
-	 * @return int
+	 * @return int the number of bytes written  
 	 */
 	function printLine(string $message = ''): int {
 		return $this->write ( $message . PHP_EOL );
@@ -21,10 +23,11 @@ class PrintStream extends ResourceOutputStream {
 	 * Convenience method.
 	 *
 	 * @param string $format        	
-	 * @param string $args,...        	
+	 * @param string $args,...
+	 * @return the number of bytes written  
 	 * @see http://www.php.net/manual/en/function.sprintf.php
 	 */
-	function printFormatted(string $format) {
+	function printFormatted(string $format): int {
 		$args = func_get_args ();
 		$s = call_user_func_array ( 'sprintf', $args );
 		return $this->write ( $s );
@@ -39,6 +42,8 @@ class PrintStream extends ResourceOutputStream {
 			];
 			return call_user_func_array ( $callback, $arguments );
 		}
+		
+		throw new UnsupportedOperationException ( "$name" );
 	}
 	
 }
