@@ -5,7 +5,7 @@ namespace tagadvance\gilligan\cache;
 use PHPUnit\Framework\TestCase;
 
 /**
- * 
+ * Note: this test requires `--define apc.enable_cli=1`
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
 class APCTest extends TestCase {
