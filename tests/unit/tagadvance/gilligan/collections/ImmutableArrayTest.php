@@ -6,30 +6,36 @@ use PHPUnit\Framework\TestCase;
 
 class ImmutableArrayTest extends TestCase {
 
-    private $array;
+    private $immutableArray;
 
     function setUp() {
-        $this->array = [
+        $this->immutableArray = new ImmutableArray([
                 0 => 'zero',
                 1 => 'one',
                 'foo' => 'bar'
-        ];
+        ]);
+    }
+
+    function testGet() {
+        $this->assertEquals($expected = 'bar', $this->immutableArray['foo']);
     }
 
     /**
      * @expectedException tagadvance\gilligan\base\UnsupportedOperationException
      */
     function testSetFails() {
-        $immutableArray = new ImmutableArray($this->array);
-        $immutableArray[] = new \stdClass();
+        $this->immutableArray[] = new \stdClass();
+    }
+
+    function testIsSet() {
+        $this->assertTrue(isset($this->immutableArray['foo']));
     }
 
     /**
      * @expectedException tagadvance\gilligan\base\UnsupportedOperationException
      */
     function testUnsetFails() {
-        $immutableArray = new ImmutableArray($this->array);
-        unset($immutableArray['foo']);
+        unset($this->immutableArray['foo']);
     }
 
 }

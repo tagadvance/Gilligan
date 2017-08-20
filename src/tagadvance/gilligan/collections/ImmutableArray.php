@@ -21,7 +21,7 @@ class ImmutableArray implements \ArrayAccess {
     }
 
     function offsetGet($offset) {
-        return $this->values[$offset];
+        return $this->array[$offset];
     }
 
     function __set($name, $value) {
@@ -37,7 +37,7 @@ class ImmutableArray implements \ArrayAccess {
     }
 
     function offsetExists($offset) {
-        return isset($this->keys[$offset]);
+        return isset($this->array[$offset]);
     }
 
     function __unset($name) {
