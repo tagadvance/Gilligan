@@ -16,6 +16,8 @@ namespace tagadvance\gilligan\base;
  * </code>
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
+ *         
+ * @deprecated Because we should define dependencies in composer.json.
  */
 final class Extensions {
 
