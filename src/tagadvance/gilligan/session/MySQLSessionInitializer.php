@@ -61,7 +61,7 @@ class MySQLSessionInitializer {
 			session_write_close ();
 		}
 		
-		$options = self::BIND_TO_IP | self::DO_NOTHING_ON_DESTROY;
+		$options = MySQLSessionHandler::BIND_TO_IP | MySQLSessionHandler::DO_NOTHING_ON_DESTROY;
 		$handler = new MySQLSessionHandler ( $this->pdo, $options );
 		SessionSaveHandler::register ( $handler, $register_shutdown );
 	}
