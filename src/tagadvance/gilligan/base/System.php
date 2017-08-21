@@ -2,7 +2,7 @@
 
 namespace tagadvance\gilligan\base;
 
-use tagadvance\gilligan\util\SystemTimeProvider;
+use tagadvance\gilligan\time\SystemTimeProvider;
 
 class System {
 	
@@ -11,7 +11,7 @@ class System {
 	 * @return integer Returns the current time in milliseconds.
 	 */
 	static function currentTimeMillis() {
-		$provider = new SystemTimeProvider ();
+		$provider = new SystemTimeProvider();
 		return $provider->currentTimeMillis ();
 	}
 
