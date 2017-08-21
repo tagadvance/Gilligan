@@ -22,7 +22,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
 
 	private $options;
 
-	function __construct(PDO $pdo, int $options = 0) {
+	function __construct(\PDO $pdo, int $options = 0) {
 		$this->pdo = $pdo;
 		$this->options = $options;
 	}
@@ -44,7 +44,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
 		$statement = $this->pdo->prepare ( $sql );
 		$statement->bindParam ( ':session_id', $session_id );
 		$statement->execute ();
-		$result = $statement->fetch ( PDO::FETCH_OBJ );
+		$result = $statement->fetch ( \PDO::FETCH_OBJ );
 		$statement->closeCursor ();
 		if ($result !== false) {
 			$ip = get_remote_ip ();
@@ -60,15 +60,15 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
 	 * Honor the PDO ATTR_ERRMODE.
 	 */
 	private function triggerError($message) {
-		$mode = $this->pdo->getAttribute ( PDO::ATTR_ERRMODE );
+		$mode = $this->pdo->getAttribute ( \PDO::ATTR_ERRMODE );
 		switch ($mode) {
-			case PDO::ERRMODE_WARNING :
+			case \PDO::ERRMODE_WARNING :
 				trigger_error ( $message, E_USER_ERROR );
 				break;
-			case PDO::ERRMODE_EXCEPTION :
+			case \PDO::ERRMODE_EXCEPTION :
 				throw new \RuntimeException ( $message );
 				break;
-			case PDO::ERRMODE_SILENT :
+			case \PDO::ERRMODE_SILENT :
 			default :
 				break;
 		}

@@ -2,6 +2,8 @@
 
 namespace tagadvance\gilligan\session;
 
+use tagadvance\gilligan\cache\APC;
+
 /**
  * A drop-in replacement session handler which saves data to APC.
  */
