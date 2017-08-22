@@ -19,37 +19,37 @@ class PrintObjectObserver implements ObjectObserver {
 
     function onUnset(ObjectUnsetEvent $event) {
         $pattern = 'unset(%s->%s) at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $when);
     }
 
     function onInvoke(ObjectInvokeEvent $event) {
         $pattern = 'invoke: %s() at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $when);
     }
 
     function onGet(ObjectGetEvent $event) {
         $pattern = 'get: %s->%s at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $when);
     }
 
     function onCall(ObjectCallEvent $event) {
         $pattern = 'call: %s->%s(...) at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $when);
     }
 
     function onIsSet(ObjectIsSetEvent $event) {
         $pattern = 'isset(%s->%s) at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $when);
     }
 
     function onSet(ObjectSetEvent $event) {
         $pattern = 'set: %s->%s = %s at %s' . PHP_EOL;
-        $when = date(self::DATE_FORMAT, $event->getWhen() / 1000);
+        $when = date(self::DATE_FORMAT, $event->getWhen());
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $event->getValue(), $when);
     }
 

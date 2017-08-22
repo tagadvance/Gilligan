@@ -37,7 +37,7 @@ class ObjectProxy {
         try {
             return isset($this->value->$name) ? $this->value->$name : $this->attributes[$name];
         } finally {
-            $when = System::currentTimeMillis();
+            $when = System::currentTimeMillis() / 1000;
             $event = new ObjectGetEvent($this->value, $when, $name);
             foreach ($this->observers as $observer) {
                 $observer->onGet($event);
