@@ -2,7 +2,7 @@
 
 namespace tagadvance\gilligan\proxy\object;
 
-class ObjectAdapter implements ObjectObserver {
+class ObjectObserverAdapter implements ObjectObserver {
 
     function onUnset(ObjectUnsetEvent $event) {}
 

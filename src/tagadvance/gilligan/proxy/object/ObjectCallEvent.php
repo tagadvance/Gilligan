@@ -2,7 +2,7 @@
 
 namespace tagadvance\gilligan\proxy\object;
 
-class ObjectCallEvent extends ObjectEvent {
+class ObjectCallEvent extends ObjectEventObject {
 
     /**
      *

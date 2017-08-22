@@ -3,7 +3,7 @@
 namespace tagadvance\gilligan\proxy\object;
 
 
-class ObjectUnsetEvent extends ObjectEvent {
+class ObjectUnsetEvent extends ObjectEventObject {
 
     /**
      *
