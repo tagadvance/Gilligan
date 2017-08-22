@@ -1,6 +1,6 @@
 <?php
 
-namespace tagadvance\gilligan\proxy\object;
+namespace tagadvance\gilligan\proxy;
 
 class ObjectSetEvent extends ObjectEventObject {
 

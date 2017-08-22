@@ -1,8 +1,8 @@
 <?php
 
-namespace tagadvance\gilligan\proxy\object;
+namespace tagadvance\gilligan\proxy;
 
-class ObjectGetEvent extends ObjectEventObject {
+class ObjectIsSetEvent extends ObjectEventObject {
 
     /**
      *
