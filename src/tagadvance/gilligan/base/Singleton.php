@@ -4,7 +4,7 @@ namespace tagadvance\gilligan\base;
 
 trait Singleton {
 
-    static function getInstance() {
+    static function getInstance(): self {
         static $instance = null;
         if ($instance === null) {
             $instance = new self();
@@ -12,9 +12,7 @@ trait Singleton {
         return $instance;
     }
 
-    private function __construct() {
-        
-    }
+    private function __construct() {}
 
     /**
      * Private clone method to prevent cloning of the instance of the
