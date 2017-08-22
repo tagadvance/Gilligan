@@ -6,25 +6,6 @@ use PHPUnit\Framework\TestCase;
 use tagadvance\gilligan\base\Standard;
 
 class ObjectProxyTest extends TestCase {
-
-    function testFoo() {
-        $source = new class() extends \stdClass {
-            function foo() {}
-            function __invoke() {}
-        };
-        $proxy = new ObjectProxy($source);
-        $observer = new PrintObjectObserver(Standard::err(), $name = 'source');
-        $proxy->addObjectObserver($observer);
-        
-        $proxy->foo = 'bar';
-        $proxy->foo;
-        if (isset($proxy->foo)) {
-            unset($proxy->foo);
-        }
-        
-        $proxy->foo();
-        $proxy();
-    }
     
     function testGet() {
         $source = new \stdClass();
