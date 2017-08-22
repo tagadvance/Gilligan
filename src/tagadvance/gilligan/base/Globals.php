@@ -2,6 +2,8 @@
 
 namespace tagadvance\gilligan\base;
 
+use tagadvance\gilligan\traits\Singleton;
+
 final class Globals {
     
     use Singleton;

@@ -1,9 +1,9 @@
 <?php
 
-namespace tagadvance\gilligan\base;
+namespace tagadvance\gilligan\traits;
 
 trait Singleton {
-
+    
     static function getInstance(): self {
         static $instance = null;
         if ($instance === null) {
@@ -11,9 +11,9 @@ trait Singleton {
         }
         return $instance;
     }
-
+    
     private function __construct() {}
-
+    
     /**
      * Private clone method to prevent cloning of the instance of the
      * *Singleton* instance.
@@ -22,5 +22,5 @@ trait Singleton {
      * @see http://www.phptherightway.com/pages/Design-Patterns.html
      */
     private function __clone() {}
-
+    
 }
