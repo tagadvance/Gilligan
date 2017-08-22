@@ -31,7 +31,7 @@ class ObjectProxyTest extends TestCase {
         $source->foo = 'bar';
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onGet'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onGet'])->getMock();
         $mock->expects($this->once())->method('onGet');
         $proxy->addObjectObserver($mock);
         
@@ -42,7 +42,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onSet'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onSet'])->getMock();
         $mock->expects($this->once())->method('onSet');
         $proxy->addObjectObserver($mock);
         
@@ -53,7 +53,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onIsSet'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onIsSet'])->getMock();
         $mock->expects($this->once())->method('onIsSet');
         $proxy->addObjectObserver($mock);
         
@@ -64,7 +64,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onUnset'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onUnset'])->getMock();
         $mock->expects($this->once())->method('onUnset');
         $proxy->addObjectObserver($mock);
         
@@ -77,7 +77,7 @@ class ObjectProxyTest extends TestCase {
         };
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onCall'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onCall'])->getMock();
         $mock->expects($this->once())->method('onCall');
         $proxy->addObjectObserver($mock);
         
@@ -90,7 +90,7 @@ class ObjectProxyTest extends TestCase {
         };
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectAdapter')->setMethods(['onInvoke'])->getMock();
+        $mock = $this->getMockBuilder('tagadvance\gilligan\proxy\object\ObjectObserverAdapter')->setMethods(['onInvoke'])->getMock();
         $mock->expects($this->once())->method('onInvoke');
         $proxy->addObjectObserver($mock);
         
