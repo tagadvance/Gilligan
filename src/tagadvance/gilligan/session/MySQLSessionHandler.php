@@ -58,7 +58,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         $this->options = $options;
     }
 
-    private function initialize() {
+    function initialize() {
         if (! $this->isInitialized) {
             $this->createTableIfNotExists();
             $this->createIndexIfNotExists();
@@ -72,7 +72,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         $sql = 'CREATE TABLE IF NOT EXISTS `sessions` (
 				`session_id` varchar(40) NOT NULL,
 				`data` text NOT NULL,
-				`expiration` timestamp,
+				`creation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+				`expiration_time` timestamp NOT NULL DEFAULT "1970-01-01 00:00:00",
 				`ip` varchar(45) NOT NULL,
 				PRIMARY KEY  (`session_id`)
 				) ENGINE=InnoDB;';
@@ -88,7 +89,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
             try {
                 $row = $statement->fetch(\PDO::FETCH_OBJ);
                 if ($row === false) {
-                    $sql = 'CREATE INDEX `index_expiration` ON `sessions` (`expiration`)';
+                    $sql = 'CREATE INDEX `index_expiration` ON `sessions` (`expiration_time`)';
                     return $pdo->exec($sql);
                 }
             } finally {
@@ -113,7 +114,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
     function read($session_id) {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
-        $sql = 'SELECT `data`, `ip` FROM `sessions` WHERE `session_id` = :session_id AND `expiration` > NOW()';
+        $sql = 'SELECT `data`, `ip` FROM `sessions` WHERE `session_id` = :session_id AND `expiration_time` > NOW()';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':session_id', $session_id);
         $statement->execute();
@@ -150,7 +151,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
     function write($id, $data) {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
-        $sql = 'INSERT INTO `sessions` (`session_id`, `ip`, `data`, `expiration`) VALUES (:session_id, :ip, :data, ADDDATE(NOW(), INTERVAL :expiration SECOND)) ON DUPLICATE KEY UPDATE `data` = VALUES (`data`), `expiration` = VALUES (`expiration`)';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `ip`, `data`, `expiration_time`) VALUES (:session_id, :ip, :data, ADDDATE(NOW(), INTERVAL :expiration SECOND)) ON DUPLICATE KEY UPDATE `data` = VALUES (`data`), `expiration_time` = VALUES (`expiration_time`)';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':session_id', $id);
         $statement->bindValue(':ip', $this->remoteAddress);
@@ -165,7 +166,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         $pdo = $this->pdoSupplier->getPDO();
         
         if ($this->isOptionSelected(self::DO_NOTHING_ON_DESTROY)) {
-            $sql = 'UPDATE `sessions` SET `expiration` = NOW() WHERE `session_id` = :session_id';
+            $sql = 'UPDATE `sessions` SET `expiration_time` = NOW() WHERE `session_id` = :session_id';
             $statement = $pdo->prepare($sql);
             $statement->bindValue(':session_id', $id);
             return $statement->execute();
@@ -184,7 +185,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
-        $sql = 'DELETE FROM `sessions` WHERE `expiration` < NOW()';
+        $sql = 'DELETE FROM `sessions` WHERE `expiration_time` < NOW()';
         $statement = $pdo->prepare($sql);
         return $statement->execute();
     }

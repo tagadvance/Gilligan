@@ -26,6 +26,12 @@ class MySQLSessionHandlerTest extends TestCase {
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
         ];
         $this->pdo = new \PDO($dsn, $user = 'phpunit', $password = 'password', $options);
+        
+        
+        // force create table and index
+        $supplier = new EagerPDOSupplier($this->pdo);
+        $handler = new MySQLSessionHandler($supplier, self::REMOTE_ADDRESS);
+        $handler->initialize();
     }
 
     function testReadAndWrite() {
@@ -40,9 +46,9 @@ class MySQLSessionHandlerTest extends TestCase {
         $this->assertEquals($expected = $writeData, $actual = $readData);
         
         /*
-         * Ensure that `expiration` is correct
+         * Ensure that `expiration_time` is correct
          */
-        $sql = 'SELECT `session_id`, `data`, `expiration`, `ip` FROM `sessions` WHERE `session_id` = :session_id;';
+        $sql = 'SELECT `session_id`, `data`, `expiration_time`, `ip` FROM `sessions` WHERE `session_id` = :session_id;';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $this->assertTrue($statement->execute());
@@ -56,7 +62,7 @@ class MySQLSessionHandlerTest extends TestCase {
             $expectedExpiration = $date->format($format);
             
             $sqlformat = 'Y-m-d h:i:s';
-            $date = \DateTime::createFromFormat($sqlformat, $row->expiration);
+            $date = \DateTime::createFromFormat($sqlformat, $row->expiration_time);
             $actualExpiration = $date->format($format);
             
             $this->assertEquals($expectedExpiration, $actualExpiration);
@@ -66,7 +72,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function testReadWithExpiredSession() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -84,7 +90,7 @@ class MySQLSessionHandlerTest extends TestCase {
      * @expectedException \RuntimeException
      */
     function testReadWithBindToIp() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_ADD(NOW(), INTERVAL 1 MINUTE), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_ADD(NOW(), INTERVAL 1 MINUTE), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -121,7 +127,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function testDestroy() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -148,7 +154,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function testDestroyWithDoNothingOnDestroy() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -174,7 +180,7 @@ class MySQLSessionHandlerTest extends TestCase {
         /*
          * Ensure that the "destoryed" session is expired.
          */
-        $sql = 'SELECT `session_id`, `data`, `expiration`, `ip` FROM `sessions` WHERE `session_id` = :session_id;';
+        $sql = 'SELECT `session_id`, `data`, `expiration_time`, `ip` FROM `sessions` WHERE `session_id` = :session_id;';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $this->assertTrue($statement->execute());
@@ -186,7 +192,7 @@ class MySQLSessionHandlerTest extends TestCase {
             $expectedExpiration = $date->format($format);
             
             $sqlformat = 'Y-m-d h:i:s';
-            $date = \DateTime::createFromFormat($sqlformat, $row->expiration);
+            $date = \DateTime::createFromFormat($sqlformat, $row->expiration_time);
             $actualExpiration = $date->format($format);
             
             $this->assertEquals($expectedExpiration, $actualExpiration);
@@ -196,7 +202,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function testGarbageCollection() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -223,7 +229,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function testGarbageCollectionWithDoNothingOnDestroy() {
-        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_SUB(NOW(), INTERVAL 1 SECOND), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
         $statement->bindValue(':data', 'foo');
@@ -248,7 +254,7 @@ class MySQLSessionHandlerTest extends TestCase {
     }
 
     function tearDown() {
-        $sql = 'TRUNCATE TABLE `sessions`;';
+        $sql = 'DROP TABLE `sessions`;';
         $statement = $this->pdo->prepare($sql);
         $statement->execute();
         unset($this->pdo);
