@@ -2,45 +2,89 @@
 
 namespace tagadvance\gilligan\session;
 
-use tagadvance\gilligan\cache\APC;
-
 /**
  * A drop-in replacement session handler which saves data to APC.
+ * WARNING: APC is volatile!
  */
 class APCSessionHandler implements \SessionHandlerInterface {
-    
-	/**
-	 * 
-	 * @var APC
-	 */
-	private $apc;
 
-	function __construct(APC $apc) {
-		$this->apc = $apc;
-	}
+    const META_KEY_CREATION_TIME = 'CREATION_TIME';
 
-	function open($savePath, $name) {
-		return true;
-	}
+    const META_KEY_EXPIRATION_TIME = 'CREATION_TIME';
 
-	function close() {
-		return true;
-	}
+    const META_KEY_REMOTE_ADDRESS = 'REMOTE_ADDRESS';
 
-	function read($id) {
-	    return isset($this->apc->$id) ? $this->apc->$id : '';
-	}
+    private $prefix;
 
-	function write($id, $data) {
-		$this->apc->$id = $data;
-	}
+    function __construct(string $prefix = 'session_') {
+        $this->prefix = $prefix;
+    }
 
-	function destroy($id) {
-		unset($this->apc->$id);
-	}
+    private function createKey(string $id): string {
+        return $this->prefix . $id;
+    }
 
-	function gc($maxLifetime) {
-		return true;
-	}
+    function open($savePath, $name) {
+        return true;
+    }
+
+    function close() {
+        return true;
+    }
+
+    function read($id) {
+        $key = $this->createKey($id);
+        if (apc_exists($key)) {
+            $entry = apc_fetch($key);
+            if ($entry instanceof APCSessionEntry) {
+                return $entry->getData();
+            }
+        }
+        return '';
+    }
+
+    function write($id, $data) {
+        $key = $this->createKey($id);
+        if (apc_exists($key)) {
+            $entry = apc_fetch($key);
+            if ($entry instanceof APCSessionEntry) {
+                $entry->setData($data);
+            }
+        } else {
+            $meta = [
+                    self::META_KEY_REMOTE_ADDRESS => ''
+            ];
+            $entry = new APCSessionEntry($id, $data, $meta);
+        }
+        
+        $timeToLive = get_cfg_var('session.gc_maxlifetime');
+        apc_store($key, $entry, $timeToLive);
+    }
+
+    function destroy($id) {
+        $key = $this->createKey($id);
+        apc_delete($key);
+    }
+
+    /**
+     * This method doesn't do anything; instead, we rely on the TTL.
+     * 
+     * {@inheritdoc}
+     * @see SessionHandlerInterface::gc()
+     */
+    function gc($maxLifetime) {
+        // $lifetime = get_cfg_var('session.gc_maxlifetime');
+        
+        // $cache = 'user';
+        // $pattern = "/^$this->prefix/";
+        // foreach (new \APCIterator($cache, $pattern) as $counter) {
+        //     $expirationTime = $counter['access_time'] + $lifetime;
+        //     if ($expirationTime <= time()) {
+        //         apc_delete($counter['key']);
+        //     }
+        // }
+        
+        return true;
+    }
 
 }
