@@ -1,5 +1,6 @@
 # tagadvance\gilligan\session
-== Example
+Example
+=====
 ```php
 use tagadvance\gilligan\session\APCSessionHandler;
 use tagadvance\gilligan\session\CascadeSessionHandler;
