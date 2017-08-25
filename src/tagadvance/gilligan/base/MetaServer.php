@@ -381,8 +381,8 @@ class MetaServer {
 	 *         <code>httpd.conf</code> to define PATH_INFO.
 	 */
 	function pathTranslated() {
-		return $this->server [];
-	}
+        return $this->server['PATH_TRANSLATED'];
+    }
 
 	/**
 	 * Contains the current script's path.
