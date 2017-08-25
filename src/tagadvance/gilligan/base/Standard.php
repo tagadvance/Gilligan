@@ -6,6 +6,11 @@ use tagadvance\gilligan\io\PrintStream;
 use tagadvance\gilligan\io\ResourceOutputStream;
 use tagadvance\gilligan\io\ResourceInputStream;
 
+/**
+ * 
+ * @author Tag <tagadvance+gilligan@gmail.com>
+ *
+ */
 class Standard {
 	
 	static function in(): ResourceInputStream {

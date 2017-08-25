@@ -4,6 +4,11 @@ namespace tagadvance\gilligan\base;
 
 use tagadvance\gilligan\traits\Singleton;
 
+/**
+ * 
+ * @author Tag <tagadvance+gilligan@gmail.com>
+ *
+ */
 final class Globals {
     
     use Singleton;
