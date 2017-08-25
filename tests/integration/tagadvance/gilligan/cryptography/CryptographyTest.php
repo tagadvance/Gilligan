@@ -5,6 +5,9 @@ namespace tagadvance\gilligan\cryptography;
 use PHPUnit\Framework\TestCase;
 use tagadvance\gilligan\security\Hash;
 
+/**
+ * This is a bit of a hack because I don't want to write unit tests for each class. Eventually, I'd like to break this out into its own library.
+ */
 class CryptographyTest extends TestCase {
 
     function test() {
