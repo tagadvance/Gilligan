@@ -10,15 +10,24 @@ namespace tagadvance\gilligan\cryptography;
  */
 class ConfigurationBuilder {
 
+    /**
+     * Debian and derivatives, e.g. Ubuntu, Mint, etc...
+     * @var string
+     */
     const CONFIG_DEBIAN = '/etc/ssl/openssl.cnf';
 
-    // debian + derivatives
+    /**
+     * RHEL and derivatives, e.g. CentOS, Redhat, Fedora, etc...
+     * @var string
+     */
     const CONFIG_RHEL = '/etc/pki/tls/openssl.cnf';
 
-    // RHEL + derivatives
+    /**
+     * FIXME: windows
+     * @var string
+     */
     const CONFIG_WINDOWS = null;
 
-    // FIXME: windows
     private const MINIMUM_RECOMMENDED_KEY_SIZE = 2048;
 
     private $args;
