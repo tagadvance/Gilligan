@@ -2,6 +2,8 @@
 
 namespace tagadvance\gilligan\session;
 
+use tagadvance\gilligan\cache\APC;
+
 /**
  * A drop-in replacement session handler which saves data to APC.
  * WARNING: APC is volatile!
@@ -14,9 +16,16 @@ class APCSessionHandler implements \SessionHandlerInterface {
 
     const META_KEY_REMOTE_ADDRESS = 'REMOTE_ADDRESS';
 
+    /**
+     *
+     * @var APC
+     */
+    private $apc;
+
     private $prefix;
 
-    function __construct(string $prefix = 'session_') {
+    function __construct(APC $apc, string $prefix = 'session_') {
+        $this->apc = $apc;
         $this->prefix = $prefix;
     }
 
@@ -34,8 +43,8 @@ class APCSessionHandler implements \SessionHandlerInterface {
 
     function read($id) {
         $key = $this->createKey($id);
-        if (apc_exists($key)) {
-            $entry = apc_fetch($key);
+        if (isset($this->apc->$key)) {
+            $entry = $this->apc->$key;
             if ($entry instanceof APCSessionEntry) {
                 return $entry->getData();
             }
@@ -45,8 +54,8 @@ class APCSessionHandler implements \SessionHandlerInterface {
 
     function write($id, $data) {
         $key = $this->createKey($id);
-        if (apc_exists($key)) {
-            $entry = apc_fetch($key);
+        if (isset($this->apc->$key)) {
+            $entry = $this->apc->$key;
             if ($entry instanceof APCSessionEntry) {
                 $entry->setData($data);
             }
@@ -57,18 +66,17 @@ class APCSessionHandler implements \SessionHandlerInterface {
             $entry = new APCSessionEntry($id, $data, $meta);
         }
         
-        $timeToLive = get_cfg_var('session.gc_maxlifetime');
-        apc_store($key, $entry, $timeToLive);
+        $this->apc->$key = $entry;
     }
 
     function destroy($id) {
         $key = $this->createKey($id);
-        apc_delete($key);
+        unset($this->apc->$key);
     }
 
     /**
      * This method doesn't do anything; instead, we rely on the TTL.
-     * 
+     *
      * {@inheritdoc}
      * @see SessionHandlerInterface::gc()
      */
@@ -80,7 +88,8 @@ class APCSessionHandler implements \SessionHandlerInterface {
         // foreach (new \APCIterator($cache, $pattern) as $counter) {
         //     $expirationTime = $counter['access_time'] + $lifetime;
         //     if ($expirationTime <= time()) {
-        //         apc_delete($counter['key']);
+        //         $key = $counter['key'];
+        //         unset($apc->$key);
         //     }
         // }
         

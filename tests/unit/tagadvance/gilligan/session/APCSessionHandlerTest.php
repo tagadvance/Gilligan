@@ -3,6 +3,7 @@
 namespace tagadvance\gilligan\session;
 
 use PHPUnit\Framework\TestCase;
+use tagadvance\gilligan\cache\APC;
 
 /**
  *
@@ -12,32 +13,39 @@ class APCSessionHandlerTest extends TestCase {
 
     const SESSION_ID = 'CAFEBABE';
 
+    /**
+     *
+     * @var APCSessionHandler
+     */
+    private $handler;
+
     function setUp() {
         apc_clear_cache();
+        
+        $timeToLive = get_cfg_var('session.gc_maxlifetime');
+        $apc = new APC($timeToLive);
+        $this->handler = new APCSessionHandler($apc);
     }
 
     function testReadAndWrite() {
-        $handler = new APCSessionHandler();
         $writeData = 'foo';
-        $handler->write(self::SESSION_ID, $writeData);
+        $this->handler->write(self::SESSION_ID, $writeData);
         
-        $readData = $handler->read(self::SESSION_ID);
+        $readData = $this->handler->read(self::SESSION_ID);
         
         $this->assertEquals($expected = $writeData, $actual = $readData);
     }
 
     function testDestroy() {
-        $handler = new APCSessionHandler();
-        $handler->write(self::SESSION_ID, 'foo');
-        $handler->destroy(self::SESSION_ID);
-        $actual = $handler->read(self::SESSION_ID);
+        $this->handler->write(self::SESSION_ID, 'foo');
+        $this->handler->destroy(self::SESSION_ID);
+        $actual = $this->handler->read(self::SESSION_ID);
         $this->assertEquals($expected = '', $actual);
     }
 
     function testGarbageCollection() {
-        $handler = new APCSessionHandler();
-        $handler->write(self::SESSION_ID, 'foo');
-        $result = $handler->gc($maxLifetime = 0);
+        $this->handler->write(self::SESSION_ID, 'foo');
+        $result = $this->handler->gc($maxLifetime = 0);
         $this->assertTrue($result);
     }
 

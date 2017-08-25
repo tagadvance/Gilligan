@@ -27,10 +27,14 @@ class APC implements Cache {
 
     const CACHE_TYPE = 'user';
 
-    function __construct() {}
+    private $timeToLive;
+
+    function __construct(int $timeToLive = 0) {
+        $this->timeToLive = $timeToLive;
+    }
 
     function __set($name, $value) {
-        apc_store($name, $value);
+        apc_store($name, $value, $this->timeToLive);
     }
 
     function __get($name) {
