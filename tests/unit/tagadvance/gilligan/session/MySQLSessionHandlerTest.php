@@ -191,7 +191,7 @@ class MySQLSessionHandlerTest extends TestCase {
             $format = 'i:s';
             $expectedExpiration = $date->format($format);
             
-            $sqlformat = 'Y-m-d h:i:s';
+            $sqlformat = 'Y-m-d H:i:s';
             $date = \DateTime::createFromFormat($sqlformat, $row->expiration_time);
             $actualExpiration = $date->format($format);
             
