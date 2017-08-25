@@ -34,14 +34,11 @@ class APCSessionHandlerTest extends TestCase {
         $this->assertEquals($expected = '', $actual);
     }
 
-    /*
-     * Unfortunately, there doesn't appear to be a good way to unit test the APC gc method as there is no way to forcibly modify the access time.
-     */
     function testGarbageCollection() {
         $handler = new APCSessionHandler();
         $handler->write(self::SESSION_ID, 'foo');
-        $handler->gc($maxLifetime = 0);
-        $this->assertTrue(true);
+        $result = $handler->gc($maxLifetime = 0);
+        $this->assertTrue($result);
     }
 
     function tearDown() {
