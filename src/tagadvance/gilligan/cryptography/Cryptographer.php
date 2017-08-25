@@ -3,9 +3,9 @@
 namespace tagadvance\gilligan\cryptography;
 
 interface Cryptographer {
-	
-	function encrypt(string $data): string;
-	
-	function decrypt(string $data): string;
-	
+
+    function encrypt(string $data): string;
+
+    function decrypt(string $data): string;
+
 }
