@@ -3,6 +3,7 @@
 namespace tagadvance\gilligan\util;
 
 use tagadvance\gilligan\base\Extensions;
+use tagadvance\gilligan\traits\Singleton;
 
 Extensions::getInstance()->requires('bcmath');
 
@@ -30,81 +31,53 @@ Extensions::getInstance()->requires('bcmath');
 abstract class TimeUnit {
 
     // Handy constants for conversion methods
-    const C0 = 1;
+    const NANOSECOND = 1;
 
     // nanosecond
-    const C1 = 1000;
+    const NANOSECOND_PER_MICROSECOND = 1000;
 
-    // C0 * 1000; microsecond
-    const C2 = 1000000;
+    // NANOSECOND * 1000; microsecond
+    const NANOSECOND_PER_MILLISECOND = 1000000;
 
-    // C1 * 1000; millisecond
-    const C3 = 1000000000;
+    // NANOSECOND_PER_MICROSECOND * 1000; millisecond
+    const NANOSECOND_PER_SECOND = 1000000000;
 
-    // C2 * 1000; second
-    const C4 = 60000000000;
+    // NANOSECOND_PER_MILLISECOND * 1000; second
+    const NANOSECOND_PER_MINUTE = 60000000000;
 
-    // C3 * 60; minute
-    const C5 = 3600000000000;
+    // NANOSECOND_PER_SECOND * 60; minute
+    const NANOSECOND_PER_HOUR = 3600000000000;
 
-    // C4 * 60; hour
-    const C6 = 86400000000000;
+    // NANOSECOND_PER_MINUTE * 60; hour
+    const NANOSECOND_PER_DAY = 86400000000000;
 
-    // C5 * 24; day
-    static function NANOSECONDS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new NANOSECONDS();
-        }
-        return $instance;
+    // NANOSECOND_PER_HOUR * 24; day
+    static function NANOSECONDS(): NANOSECONDS {
+        return NANOSECONDS::getInstance();
     }
 
-    static function MICROSECONDS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new MICROSECONDS();
-        }
-        return $instance;
+    static function MICROSECONDS(): MICROSECONDS {
+        return MICROSECONDS::getInstance();
     }
 
-    static function MILLISECONDS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new MILLISECONDS();
-        }
-        return $instance;
+    static function MILLISECONDS(): MILLISECONDS {
+        return MILLISECONDS::getInstance();
     }
 
-    static function SECONDS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new SECONDS();
-        }
-        return $instance;
+    static function SECONDS(): SECONDS {
+        return SECONDS::getInstance();
     }
 
-    static function MINUTES() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new MINUTES();
-        }
-        return $instance;
+    static function MINUTES(): MINUTES {
+        return MINUTES::getInstance();
     }
 
-    static function HOURS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new HOURS();
-        }
-        return $instance;
+    static function HOURS(): HOURS {
+        return HOURS::getInstance();
     }
 
-    static function DAYS() {
-        static $instance = null;
-        if ($instance == null) {
-            $instance = new DAYS();
-        }
-        return $instance;
+    static function DAYS(): DAYS {
+        return DAYS::getInstance();
     }
 
     /**
@@ -124,7 +97,7 @@ abstract class TimeUnit {
      *            the unit of the <tt>sourceDuration</tt> argument
      * @return integer the converted duration in this unit
      */
-    abstract function convert($sourceDuration, TimeUnit $sourceUnit);
+    abstract function convert($sourceDuration, TimeUnit $sourceUnit): int;
 
     /**
      * Equivalent to <tt>NANOSECONDS()->convert($duration, $this)</tt>.
@@ -133,7 +106,7 @@ abstract class TimeUnit {
      *            integer the duration
      * @return integer the converted duration.
      */
-    abstract function toNanos($duration);
+    abstract function toNanos(int $duration): int;
 
     /**
      * Equivalent to <tt>MICROSECONDS()->convert($duration, $this)</tt>.
@@ -142,7 +115,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration.
      */
-    abstract function toMicros($duration);
+    abstract function toMicros(int $duration): int;
 
     /**
      * Equivalent to <tt>MILLISECONDS()->convert($duration, $this)</tt>.
@@ -151,7 +124,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration.
      */
-    abstract function toMillis($duration);
+    abstract function toMillis(int $duration): int;
 
     /**
      * Equivalent to <tt>SECONDS()->convert($duration, $this)</tt>.
@@ -160,7 +133,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration.
      */
-    abstract function toSeconds($duration);
+    abstract function toSeconds(int $duration): int;
 
     /**
      * Equivalent to <tt>MINUTES()->convert($duration, $this)</tt>.
@@ -169,7 +142,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration.
      */
-    abstract function toMinutes($duration);
+    abstract function toMinutes(int $duration): int;
 
     /**
      * Equivalent to <tt>HOURS()->convert($duration, $this)</tt>.
@@ -178,7 +151,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration.
      */
-    abstract function toHours($duration);
+    abstract function toHours(int $duration): int;
 
     /**
      * Equivalent to <tt>DAYS()->convert($duration, $this)</tt>.
@@ -187,7 +160,7 @@ abstract class TimeUnit {
      *            the duration
      * @return integer the converted duration
      */
-    abstract function toDays($duration);
+    abstract function toDays(int $duration): int;
 
     /**
      * Utility to compute the excess-nanosecond argument to sleep.
@@ -198,7 +171,7 @@ abstract class TimeUnit {
      *            the number of milliseconds
      * @return integer the number of nanoseconds
      */
-    abstract function excessNanos($d, $m);
+    abstract function excessNanos($duration, $milliseconds);
 
     /**
      * Performs a <tt>usleep+time_nanosleep</tt> using this unit.
@@ -209,10 +182,10 @@ abstract class TimeUnit {
      *            the minimum time to sleep. If less than
      *            or equal to zero, do not sleep at all.
      */
-    function sleep($timeout) {
+    function sleep(int $timeout): void {
         if (timeout > 0) {
             $milliseconds = $this->toMillis($timeout);
-            $microseconds = bcmul($milliseconds, static::C1);
+            $microseconds = bcmul($milliseconds, static::NANOSECOND_PER_MICROSECOND);
             $nanoseconds = $this->excessNanos($timeout, $milliseconds);
             usleep($microseconds);
             time_nanosleep($seconds = 0, $nanoseconds);
@@ -231,280 +204,294 @@ abstract class TimeUnit {
 }
 
 class NANOSECONDS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return $d;
+    function toNanos(int $duration): int {
+        return $duration;
     }
 
-    function toMicros($d) {
-        return bcdiv($d, bcdiv(static::C1, static::C0));
+    function toMicros(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MICROSECOND, static::C0));
     }
 
-    function toMillis($d) {
-        return bcdiv($d, bcdiv(static::C2, static::C0));
+    function toMillis(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MILLISECOND, static::C0));
     }
 
-    function toSeconds($d) {
-        return bcdiv($d, bcdiv(static::C3, static::C0));
+    function toSeconds(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::C0));
     }
 
-    function toMinutes($d) {
-        return bcdiv($d, bcdiv(static::C4, static::C0));
+    function toMinutes(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::C0));
     }
 
-    function toHours($d) {
-        return bcdiv($d, bcdiv(static::C5, static::C0));
+    function toHours(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::C0));
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C0));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::C0));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toNanos($d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toNanos($d);
     }
 
-    function excessNanos($d, $m) {
-        return bcsub($d, bcmul($m, static::C2));
+    function excessNanos($duration, $milliseconds) {
+        return bcsub($duration, bcmul($milliseconds, static::NANOSECOND_PER_MILLISECOND));
     }
 
 }
 
 class MICROSECONDS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C1, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MICROSECOND, static::C0));
     }
 
-    function toMicros($d) {
-        return $d;
+    function toMicros(int $duration): int {
+        return $duration;
     }
 
-    function toMillis($d) {
-        return bcdiv($d, bcdiv(static::C2, static::C1));
+    function toMillis(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MILLISECOND, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toSeconds($d) {
-        return bcdiv($d, bcdiv(static::C3, static::C1));
+    function toSeconds(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMinutes($d) {
-        return bcdiv($d, bcdiv(static::C4, static::C1));
+    function toMinutes(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toHours($d) {
-        return bcdiv($d, bcdiv(static::C5, static::C1));
+    function toHours(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C1));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toMicros($d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toMicros($d);
     }
 
-    function excessNanos($d, $m) {
-        return bcsub(bcmul($d, static::C1), bcmul($m, static::C2));
+    function excessNanos($duration, $milliseconds) {
+        return bcsub(bcmul($duration, static::NANOSECOND_PER_MICROSECOND), bcmul($milliseconds, static::NANOSECOND_PER_MILLISECOND));
     }
 
 }
 
 class MILLISECONDS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C2, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MILLISECOND, static::C0));
     }
 
-    function toMicros($d) {
-        return bcmul($d, bcdiv(static::C2, static::C1));
+    function toMicros(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MILLISECOND, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMillis($d) {
-        return $d;
+    function toMillis(int $duration): int {
+        return $duration;
     }
 
-    function toSeconds($d) {
-        return bcdiv($d, bcdiv(static::C3, static::C2));
+    function toSeconds(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toMinutes($d) {
-        return bcdiv($d, bcdiv(static::C4, static::C2));
+    function toMinutes(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toHours($d) {
-        return bcdiv($d, bcdiv(static::C5, static::C2));
+    function toHours(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C2));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toMillis($d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toMillis($d);
     }
 
-    function excessNanos($d, $m) {
+    function excessNanos($duration, $milliseconds) {
         return 0;
     }
 
 }
 
 class SECONDS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C3, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::C0));
     }
 
-    function toMicros($d) {
-        return bcmul($d, bcdiv(static::C3, static::C1));
+    function toMicros(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMillis($d) {
-        return bcmul($d, bcdiv(static::C3, static::C2));
+    function toMillis(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_SECOND, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toSeconds($d) {
-        return $d;
+    function toSeconds(int $duration): int {
+        return $duration;
     }
 
-    function toMinutes($d) {
-        return bcdiv($d, bcdiv(static::C4, static::C3));
+    function toMinutes(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_SECOND));
     }
 
-    function toHours($d) {
-        return bcdiv($d, bcdiv(static::C5, static::C3));
+    function toHours(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_SECOND));
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C3));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_SECOND));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toSeconds($d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toSeconds($d);
     }
 
-    function excessNanos($d, $m) {
+    function excessNanos($duration, $milliseconds) {
         return 0;
     }
 
 }
 
 class MINUTES extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C4, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::C0));
     }
 
-    function toMicros($d) {
-        return bcmul($d, bcdiv(static::C4, static::C1));
+    function toMicros(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMillis($d) {
-        return bcmul($d, bcdiv(static::C4, static::C2));
+    function toMillis(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toSeconds($d) {
-        return bcmul($d, bcdiv(static::C4, static::C3));
+    function toSeconds(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_MINUTE, static::NANOSECOND_PER_SECOND));
     }
 
-    function toMinutes($d) {
-        return $d;
+    function toMinutes(int $duration): int {
+        return $duration;
     }
 
-    function toHours($d) {
-        return bcdiv($d, bcdiv(static::C5, static::C4));
+    function toHours(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MINUTE));
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C4));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MINUTE));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toMinutes(d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toMinutes(d);
     }
 
-    function excessNanos($d, $m) {
+    function excessNanos($duration, $milliseconds) {
         return 0;
     }
 
 }
 
 class HOURS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C5, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::C0));
     }
 
-    function toMicros($d) {
-        return bcmul($d, bcdiv(static::C5, static::C1));
+    function toMicros(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMillis($d) {
-        return bcmul($d, bcdiv(static::C5, static::C2));
+    function toMillis(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toSeconds($d) {
-        return bcmul($d, bcdiv(static::C5, static::C3));
+    function toSeconds(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_SECOND));
     }
 
-    function toMinutes($d) {
-        return bcmul($d, bcdiv(static::C5, static::C4));
+    function toMinutes(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_HOUR, static::NANOSECOND_PER_MINUTE));
     }
 
-    function toHours($d) {
-        return $d;
+    function toHours(int $duration): int {
+        return $duration;
     }
 
-    function toDays($d) {
-        return bcdiv($d, bcdiv(static::C6, static::C5));
+    function toDays(int $duration): int {
+        return bcdiv($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_HOUR));
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toHours($d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toHours($d);
     }
 
-    function excessNanos($d, $m) {
+    function excessNanos($duration, $milliseconds) {
         return 0;
     }
 
 }
 
 class DAYS extends TimeUnit {
+    
+    use Singleton;
 
-    function toNanos($d) {
-        return bcmul($d, bcdiv(static::C6, static::C0));
+    function toNanos(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::C0));
     }
 
-    function toMicros($d) {
-        return bcmul($d, bcdiv(static::C6, static::C1));
+    function toMicros(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MICROSECOND));
     }
 
-    function toMillis($d) {
-        return bcmul($d, bcdiv(static::C6, static::C2));
+    function toMillis(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MILLISECOND));
     }
 
-    function toSeconds($d) {
-        return bcmul($d, bcdiv(static::C6, static::C3));
+    function toSeconds(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_SECOND));
     }
 
-    function toMinutes($d) {
-        return bcmul($d, bcdiv(static::C6, static::C4));
+    function toMinutes(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_MINUTE));
     }
 
-    function toHours($d) {
-        return bcmul($d, bcdiv(static::C6, static::C5));
+    function toHours(int $duration): int {
+        return bcmul($duration, bcdiv(static::NANOSECOND_PER_DAY, static::NANOSECOND_PER_HOUR));
     }
 
-    function toDays($d) {
-        return $d;
+    function toDays(int $duration): int {
+        return $duration;
     }
 
-    function convert($d, TimeUnit $u) {
-        return $u->toDays(d);
+    function convert($duration, TimeUnit $unit) {
+        return $unit->toDays(d);
     }
 
-    function excessNanos($d, $m) {
+    function excessNanos($duration, $milliseconds) {
         return 0;
     }
 
