@@ -250,15 +250,14 @@ class MetaServer {
 	}
 
 	/**
-	 *
-	 * @return string Set to a non-empty value if the script was queried through
-	 *         the HTTPS protocol.
+	 * Set to a non-empty value if the script was queried through the HTTPS protocol.
+	 * @return bool
 	 */
-	function https() {
+	function https(): bool {
 		$https = $this->server ['HTTPS'];
 		// Note: Note that when using ISAPI with IIS, the value will be off if
 		// the request was not made through the HTTPS protocol.
-		return ! (empty ( $https ) && $https !== 'off');
+		return ! empty($https) && $https !== 'off';
 	}
 
 	/**
