@@ -1,8 +1,10 @@
-= tagadvance\gilligan\cryptography
+tagadvance\gilligan\cryptography
+=
 
 Please bear in mind that while the encryption itself is very strong, data is only as secure as the server storing the private key.
 
-== Example
+Example
+==
 ```php
 <?php 
 
