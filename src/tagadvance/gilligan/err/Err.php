@@ -4,7 +4,7 @@ namespace tagadvance\gilligan\err;
 
 /**
  * Intercept uncaught exceptions and errors.
- * 
+ *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  */
 class Err {
