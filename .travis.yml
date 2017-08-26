@@ -8,8 +8,6 @@ services:
   - mysql
   
 before_install:
-  - '# LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php'
-  
   # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
   - sudo apt-get update -y > /dev/null
   
