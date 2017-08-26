@@ -20,7 +20,7 @@ class APCSessionHandlerTest extends TestCase {
     private $handler;
 
     function setUp() {
-        apc_clear_cache();
+        apcu_clear_cache();
         
         $timeToLive = get_cfg_var('session.gc_maxlifetime');
         $apc = new APC($timeToLive);
@@ -50,7 +50,7 @@ class APCSessionHandlerTest extends TestCase {
     }
 
     function tearDown() {
-        apc_clear_cache();
+        apcu_clear_cache();
     }
 
 }
