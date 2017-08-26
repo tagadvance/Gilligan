@@ -6,6 +6,9 @@ Some of these components are or were "pet projects" that I worked on simply beca
 
 The design of some of these tools was heavily influenced by libraries like [Apache Commons](https://commons.apache.org/) and [Guava](https://github.com/google/guava).
 
+## Build Status
+[![Build Status](https://travis-ci.org/tagadvance/Gilligan.svg?branch=master)](https://travis-ci.org/tagadvance/Gilligan)
+
 ## Download / Install
 The easiest way to install Gilligan is via Composer:
 ```bash
