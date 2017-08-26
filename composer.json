@@ -11,10 +11,10 @@
 	],
 	"require" : {
 		"php" : "^7.1",
-		"apc": "*",
-		"bcmath": "*",
-		"openssl": "*",
-		"SPL": "*"
+		"ext-apc": "*",
+		"ext-bcmath": "*",
+		"ext-openssl": "*",
+		"ext-SPL": "*"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "^6.1"
