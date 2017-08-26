@@ -50,7 +50,7 @@ class APC implements Cache {
     }
 
     function clear() {
-        apcu_clear_cache(self::CACHE_TYPE);
+        apcu_clear_cache();
     }
 
     /**
