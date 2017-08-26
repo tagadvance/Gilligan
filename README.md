@@ -41,12 +41,14 @@ Standard::output()->printLine($bytes);
 // prints '<?php'
 ```
 
-Session Handlers, e.g.
+Backward Compatible Session Handlers, e.g.
 ```php
+$defaultHandler = new \SessionHandler();
 $pdo = new \PDO($dsn);
 $supplier = new EagerPDOSupplier($pdo);
-$handler = new MySQLSessionHandler($supplier, $remoteAddress = 'localhost');
-SessionSaveHandler::register($handler);
+$mysqlHandler = new MySQLSessionHandler($supplier, $remoteAddress = 'localhost');
+$cascadeHandler = new CascadeSessionHandler($mysqlHandler, $defaultHandler);
+SessionSaveHandler::register($cascadeHandler);
 session_start();
 ```
 
