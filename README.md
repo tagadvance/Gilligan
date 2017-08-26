@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/tagadvance/Gilligan.svg?branch=master)](https://travis-ci.org/tagadvance/Gilligan)
+[![Coverage Status](https://coveralls.io/repos/github/tagadvance/Gilligan/badge.svg?branch=master)](https://coveralls.io/github/tagadvance/Gilligan?branch=master)
 
 # Gilligan
 
