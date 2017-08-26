@@ -14,7 +14,8 @@
 		"ext-apcu": "*",
 		"ext-bcmath": "*",
 		"ext-openssl": "*",
-		"ext-SPL": "*"
+		"ext-SPL": "*",
+		"satooshi/php-coveralls": "^1.0"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "^6.1",
