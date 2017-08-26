@@ -13,7 +13,6 @@
 		"php" : "^7.1",
 		"ext-apcu": "*",
 		"ext-bcmath": "*",
-		"ext-openssl": "*",
 		"ext-SPL": "*",
 		"satooshi/php-coveralls": "^1.0"
 	},
