@@ -1,0 +1,28 @@
+language: php
+
+php:
+  - '7.1'
+  - nightly
+  
+services:
+  - mysql
+  
+before_install:
+  - sudo apt update -y > /dev/null
+  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  
+install:  
+  # vendor
+  - composer install --no-interaction
+
+before_script:
+  # configure time zone
+  - echo 'date.timezone = "America/Los_Angeles"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+  # provision database
+  - mysql -e 'CREATE DATABASE `phpunit` /*!40100 DEFAULT CHARACTER SET utf8 */;'
+  - mysql -e 'CREATE USER `phpunit`@`localhost` IDENTIFIED BY "password";'
+  - mysql -e 'GRANT ALL PRIVILEGES ON `phpunit`.* TO `phpunit`@`localhost`;'
+
+script:
+  - /usr/bin/php --define apc.enable_cli=1 vendor/bin/phpunit --bootstrap vendor/autoload.php tests
