@@ -69,11 +69,12 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
     private function createTableIfNotExists() {
         $pdo = $this->pdoSupplier->getPDO();
         // http://stackoverflow.com/questions/1076714/max-length-for-client-ip-address
+        // https://stackoverflow.com/a/23033086/625688
         $sql = 'CREATE TABLE IF NOT EXISTS `sessions` (
 				`session_id` varchar(40) NOT NULL,
 				`data` text NOT NULL,
-				`creation_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-				`expiration_time` timestamp NOT NULL DEFAULT "1970-01-01 00:00:00",
+				`creation_time` timestamp NULL DEFAULT null,
+				`expiration_time` timestamp NULL DEFAULT null,
 				`ip` varchar(45) NOT NULL,
 				PRIMARY KEY  (`session_id`)
 				) ENGINE=InnoDB;';
@@ -151,7 +152,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
     function write($id, $data) {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
-        $sql = 'INSERT INTO `sessions` (`session_id`, `ip`, `data`, `expiration_time`) VALUES (:session_id, :ip, :data, ADDDATE(NOW(), INTERVAL :expiration SECOND)) ON DUPLICATE KEY UPDATE `data` = VALUES (`data`), `expiration_time` = VALUES (`expiration_time`)';
+        $sql = 'INSERT INTO `sessions` (`session_id`, `ip`, `data`, `creation_time`, `expiration_time`) VALUES (:session_id, :ip, :data, NULL, ADDDATE(NOW(), INTERVAL :expiration SECOND)) ON DUPLICATE KEY UPDATE `data` = VALUES (`data`), `expiration_time` = VALUES (`expiration_time`)';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':session_id', $id);
         $statement->bindValue(':ip', $this->remoteAddress);
