@@ -29,8 +29,6 @@ Standard::output()->printLine('foo');
 // prints 'foo'
 ```
 
-[Cryptography Type System](https://github.com/tagadvance/Gilligan/blob/master/src/tagadvance/gilligan/cryptography/README.md)
-
 Java-like IO Streams, e.g.
 ```php
 $fileName = 'test.php';
