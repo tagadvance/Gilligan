@@ -25,4 +25,4 @@ before_script:
   - mysql -e 'GRANT ALL PRIVILEGES ON `phpunit`.* TO `phpunit`@`localhost`;'
 
 script:
-  - /usr/bin/php --define apc.enable_cli=1 vendor/bin/phpunit --bootstrap vendor/autoload.php tests
+  - php --define apc.enable_cli=1 vendor/bin/phpunit --bootstrap vendor/autoload.php tests
