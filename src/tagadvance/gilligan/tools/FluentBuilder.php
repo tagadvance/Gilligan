@@ -6,7 +6,7 @@ use tagadvance\gilligan\text\StringClass;
 use tagadvance\gilligan\base\Blank;
 
 /**
- * This class is designed as a builder with a fluent interface to simplify functions which are not otherwise chainable.
+ * This class is designed as a builder with a fluent interface to simplify the invocation of functions which are not otherwise chainable.
  * <code>__call()</code> has been overridden to call functions with <code>$value</code> as the first argument.
  * <code>__invoke()</code> has been overriden to return <code>$value</code>.
  * <code>
