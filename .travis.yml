@@ -27,6 +27,12 @@ before_script:
   - mysql -e 'CREATE DATABASE `phpunit` /*!40100 DEFAULT CHARACTER SET utf8 */;'
   - mysql -e 'CREATE USER `phpunit`@`localhost` IDENTIFIED BY "password";'
   - mysql -e 'GRANT ALL PRIVILEGES ON `phpunit`.* TO `phpunit`@`localhost`;'
+  
+  # php-coveralls
+  - mkdir -p build/logs
 
 script:
-  - php --define apc.enable_cli=1 vendor/bin/phpunit --bootstrap vendor/autoload.php tests
+  - php --define apc.enable_cli=1 vendor/bin/phpunit --bootstrap vendor/autoload.php --coverage-clover build/logs/clover.xml tests
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
