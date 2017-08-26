@@ -14,7 +14,6 @@ before_install:
 install:
   # APC
   - yes '' | pecl install -f apcu
-  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   
   # vendor
   - composer install --no-interaction
