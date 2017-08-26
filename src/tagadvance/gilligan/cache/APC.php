@@ -34,29 +34,29 @@ class APC implements Cache {
     }
 
     function __set($name, $value) {
-        apc_store($name, $value, $this->timeToLive);
+        apcu_store($name, $value, $this->timeToLive);
     }
 
     function __get($name) {
-        return apc_fetch($name);
+        return apcu_fetch($name);
     }
 
     function __isset($name): bool {
-        return apc_exists($name);
+        return apcu_exists($name);
     }
 
     function __unset($name) {
-        return apc_delete($name);
+        return apcu_delete($name);
     }
 
     function clear() {
-        apc_clear_cache(self::CACHE_TYPE);
+        apcu_clear_cache(self::CACHE_TYPE);
     }
 
     /**
      *
      * @return string
-     * @see apc_cache_info
+     * @see apcu_cache_info
      */
     function __toString(): string {
         return $this->toHumanReadableString();
@@ -74,7 +74,7 @@ class APC implements Cache {
             $formatter = new HumanReadableByteCountFormatter();
         }
         
-        $user_info = apc_cache_info(self::CACHE_TYPE);
+        $user_info = apcu_cache_info(self::CACHE_TYPE);
         if ($user_info !== false) {
             self::replaceFields($user_info, $format, $formatter);
             foreach ($user_info['cache_list'] as &$entry) {
