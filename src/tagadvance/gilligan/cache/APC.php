@@ -5,7 +5,7 @@ namespace tagadvance\gilligan\cache;
 use tagadvance\gilligan\base\Extensions, tagadvance\gilligan\text\ByteCountFormatter, tagadvance\gilligan\text\HumanReadableByteCountFormatter;
 use tagadvance\gilligan\text\StringClass;
 
-Extensions::getInstance()->requires('apc');
+Extensions::getInstance()->requires('apcu');
 
 /**
  *

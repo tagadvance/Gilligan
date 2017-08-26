@@ -8,12 +8,12 @@ class ExtensionsTest extends TestCase {
 	
 	function testRequires() {
 		$installedExtensions = [ 
-				'apc',
+				'apcu',
 				'bcmath',
 				'json' 
 		];
 		$extensions = new Extensions ( $installedExtensions );
-		$extensions->requires ( 'apc', 'bcmath', 'json' );
+		$extensions->requires ( 'apcu', 'bcmath', 'json' );
 		$this->assertTrue ( true );
 	}
 	
@@ -22,7 +22,7 @@ class ExtensionsTest extends TestCase {
 		
 		$installedExtensions = [ ];
 		$extensions = new Extensions ( $installedExtensions );
-		$extensions->requires ( 'apc', 'bcmath', 'json' );
+		$extensions->requires ( 'apcu', 'bcmath', 'json' );
 	}
 	
 }

@@ -11,7 +11,7 @@
 	],
 	"require" : {
 		"php" : "^7.1",
-		"ext-apc": "*",
+		"ext-apcu": "*",
 		"ext-bcmath": "*",
 		"ext-openssl": "*",
 		"ext-SPL": "*"
