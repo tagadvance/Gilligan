@@ -9,9 +9,11 @@ services:
   
 before_install:
   - sudo apt update -y > /dev/null
-  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   
-install:  
+install:
+  # APC
+  - pecl install -f apcu
+  
   # vendor
   - composer install --no-interaction
 
