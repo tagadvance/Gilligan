@@ -23,7 +23,7 @@ composer require "tagadvance/gilligan:dev-master"
 ```
 
 ## Highlights
-`tagadvance\gilligan\base\Standard`
+Standard Print Streams, e.g.
 ```php
 Standard::output()->printLine('foo');
 // prints 'foo'
@@ -31,7 +31,7 @@ Standard::output()->printLine('foo');
 
 [Cryptography Type System](https://github.com/tagadvance/Gilligan/blob/master/src/tagadvance/gilligan/cryptography/README.md)
 
-Java-like IO Streams
+Java-like IO Streams, e.g.
 ```php
 $fileName = 'test.php';
 $file = new File( $fileName );
@@ -41,7 +41,7 @@ Standard::output()->printLine($bytes);
 // prints '<?php'
 ```
 
-Session Handlers
+Session Handlers, e.g.
 ```php
 $pdo = new \PDO($dsn);
 $supplier = new EagerPDOSupplier($pdo);
@@ -50,7 +50,7 @@ SessionSaveHandler::register($handler);
 session_start();
 ```
 
-`StringClass`
+`StringClass`, e.g.
 ```php
 $true = StringClass::valueOf('abcxyz')->startsWith('abc');
 ```
