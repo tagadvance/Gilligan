@@ -8,6 +8,7 @@ services:
   - mysql
   
 before_install:
+  # WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
   - sudo apt-get update -y > /dev/null
   
 install:
