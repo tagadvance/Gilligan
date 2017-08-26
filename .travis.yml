@@ -13,7 +13,7 @@ before_install:
   
 install:
   # APC
-  - pecl install -f apcu
+  - yes '' | pecl install -f apc
   
   # vendor
   - composer install --no-interaction
