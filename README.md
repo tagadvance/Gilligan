@@ -36,10 +36,10 @@ $file = new File( $fileName );
 $stream = new FileInputStream( $file );
 try {
 	$bytes = $stream->read($length = 5);
+	Standard::output()->printLine($bytes);
 } finally {
 	$stream->close();
 }
-Standard::output()->printLine($bytes);
 // prints '<?php'
 ```
 
