@@ -34,7 +34,11 @@ Java-like IO Streams, e.g.
 $fileName = 'test.php';
 $file = new File( $fileName );
 $stream = new FileInputStream( $file );
-$bytes = $stream->read($length = 5);
+try {
+	$bytes = $stream->read($length = 5);
+} finally {
+	$stream->close();
+}
 Standard::output()->printLine($bytes);
 // prints '<?php'
 ```
