@@ -284,8 +284,8 @@ class StringClassTest extends TestCase {
 	function testPadLeft0WithFour1s() {
 		$expected = '00001';
 		$string = new StringClass ( '1' );
-		$string = $string->padLeft ( '0', $length = 5 );
-		$this->assertEquals ( $expected, $actual = $string () );
+		$string = $string->padLeft ( $length = 5, '0' );
+		$this->assertEquals ( $expected, $actual = $string() );
 	}
 	
 	function testPadLeftWithLengthLessThanNumberOfCharacters() {

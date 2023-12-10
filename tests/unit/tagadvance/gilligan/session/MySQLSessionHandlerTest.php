@@ -20,7 +20,7 @@ class MySQLSessionHandlerTest extends TestCase {
 
     private $pdo;
 
-    function setUp() {
+    function setUp(): void {
         $dsn = 'mysql:host=localhost;charset=UTF8;dbname=phpunit';
         $options = [
                 \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION
@@ -86,10 +86,9 @@ class MySQLSessionHandlerTest extends TestCase {
         $this->assertEquals($expected = '', $actual = $readData);
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     function testReadWithBindToIp() {
+        $this->expectException(\RuntimeException::class);
+
         $sql = 'INSERT INTO `sessions` (`session_id`, `data`, `expiration_time`, `ip`) VALUES (:session_id, :data, DATE_ADD(NOW(), INTERVAL 1 MINUTE), :ip);';
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':session_id', self::SESSION_ID);
@@ -253,7 +252,7 @@ class MySQLSessionHandlerTest extends TestCase {
         }
     }
 
-    function tearDown() {
+    function tearDown(): void {
         $sql = 'DROP TABLE `sessions`;';
         $statement = $this->pdo->prepare($sql);
         $statement->execute();

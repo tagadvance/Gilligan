@@ -8,7 +8,7 @@ class FileInputStreamTest extends TestCase {
 	
 	private $file;
 	
-	function setUp() {
+	function setUp(): void {
 		// dd if=/dev/zero of=input-test-data bs=1 count=8
 		// dd if=/dev/urandom of=input-test-data bs=1 count=8 oflag=append conv=notrunc
 		$fileName = __DIR__ . '/../../../../resources/input-test-data';

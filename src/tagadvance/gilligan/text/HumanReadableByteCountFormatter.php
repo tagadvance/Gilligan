@@ -23,7 +23,7 @@ class HumanReadableByteCountFormatter implements ByteCountFormatter {
 	
 	protected function prefix(int $index): string {
 		$pre = self::PREFIXES;
-		return $pre {$index} . 'i';
+		return $pre[$index] . 'i';
 	}
 	
 }

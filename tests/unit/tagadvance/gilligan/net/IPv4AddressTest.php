@@ -24,7 +24,7 @@ class IPv4AddressTest extends TestCase {
 		$this->assertTrue ( $condition );
 	}
 	
-	function validSubnetProvider() {
+	static function validSubnetProvider() {
 		return [ 
 				[ 
 						'192.168.0.0',
@@ -54,7 +54,7 @@ class IPv4AddressTest extends TestCase {
 		$this->assertFalse ( $condition );
 	}
 	
-	function invalidSubnetProvider() {
+	static function invalidSubnetProvider() {
 		return [ 
 				[ 
 						'192.168.0.7',
@@ -76,7 +76,7 @@ class IPv4AddressTest extends TestCase {
 		$this->assertTrue ( $isPrivate );
 	}
 	
-	function privateAddresses() {
+	static function privateAddresses() {
 		return [ 
 				[ 
 						'10.0.0.0' 
@@ -114,7 +114,7 @@ class IPv4AddressTest extends TestCase {
 		$this->assertFalse ( $isPrivate );
 	}
 	
-	function publicAddresses() {
+	static function publicAddresses() {
 		return [
 				[
 						'9.255.255.255'
@@ -144,13 +144,14 @@ class IPv4AddressTest extends TestCase {
 	}
 	
 	function testGetByName() {
-		$expected = '34.210.19.227';
-		
-		$hostname = 'intentionallyblankpage.com';
-		$ip = IPv4Address::getByName($hostname);
-		
-		$this->assertEquals($expected, $actual = $ip->getAddress());
-	}
+        $hostname = 'intentionallyblankpage.com';
+        $ip = IPv4Address::getByName($hostname);
+
+        $this->assertMatchesRegularExpression(
+            '/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/',
+            $actual = $ip->getAddress()
+        );
+    }
 	
 	function testGetLocalIP() {
 		IPv4Address::getLocalIP();

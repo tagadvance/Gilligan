@@ -8,7 +8,7 @@ class HashTest extends TestCase {
 
 	private $data;
 	
-	function setUp() {
+	function setUp(): void {
 		$filename = __DIR__ . '/../../../../resources/input-test-data';
 		$this->data = file_get_contents($filename);
 	}

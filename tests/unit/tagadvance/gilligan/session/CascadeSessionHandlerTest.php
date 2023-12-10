@@ -12,10 +12,9 @@ class CascadeSessionHandlerTest extends TestCase {
 
     const SESSION_ID = 'CAFEBABE';
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     function testConstructorWithNoArgumentsThrowsInvalidArgumentException() {
+        $this->expectException(\InvalidArgumentException::class);
+
         new CascadeSessionHandler();
     }
 

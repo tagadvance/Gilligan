@@ -11,7 +11,7 @@ class ObjectProxyTest extends TestCase {
         $source->foo = 'bar';
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onGet'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onGet'])->getMock();
         $mock->expects($this->once())->method('onGet');
         $proxy->addObjectObserver($mock);
         
@@ -22,7 +22,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onSet'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onSet'])->getMock();
         $mock->expects($this->once())->method('onSet');
         $proxy->addObjectObserver($mock);
         
@@ -33,7 +33,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onIsSet'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onIsSet'])->getMock();
         $mock->expects($this->once())->method('onIsSet');
         $proxy->addObjectObserver($mock);
         
@@ -44,7 +44,7 @@ class ObjectProxyTest extends TestCase {
         $source = new \stdClass();
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onUnset'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onUnset'])->getMock();
         $mock->expects($this->once())->method('onUnset');
         $proxy->addObjectObserver($mock);
         
@@ -57,7 +57,7 @@ class ObjectProxyTest extends TestCase {
         };
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onCall'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onCall'])->getMock();
         $mock->expects($this->once())->method('onCall');
         $proxy->addObjectObserver($mock);
         
@@ -70,7 +70,7 @@ class ObjectProxyTest extends TestCase {
         };
         $proxy = new ObjectProxy($source);
         
-        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->setMethods(['onInvoke'])->getMock();
+        $mock = $this->getMockBuilder(ObjectObserverAdapter::class)->onlyMethods(['onInvoke'])->getMock();
         $mock->expects($this->once())->method('onInvoke');
         $proxy->addObjectObserver($mock);
         

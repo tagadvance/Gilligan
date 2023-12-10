@@ -45,7 +45,7 @@ class FluentBuilder {
         $isExplicit = StringClass::valueOf($name)->startsWith(self::EXPLICIT_PREFIX);
         if ($isExplicit) {
             $name = substr($name, $start = strlen(self::EXPLICIT_PREFIX));
-            $name{0} = strtolower($name{0});
+            $name[0] = strtolower($name[0]);
             $arguments = array_map(function ($e) {
                 return $e instanceof Blank ? $this->value : $e;
             }, $arguments);

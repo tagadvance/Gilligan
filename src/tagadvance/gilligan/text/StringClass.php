@@ -341,17 +341,17 @@ class StringClass {
 	 * @param string $characters
 	 * @return self a random string
 	 */
-	static function random(int $length, $characters = 'abcdefghijklmnopqrstuvwxyz0123456789'): self {
+	static function random(int $length, string $characters = 'abcdefghijklmnopqrstuvwxyz0123456789'): self {
 		$min = 0;
-		$max = strlen ( $characters ) - 1;
+		$max = strlen($characters) - 1;
 		
 		$randomString = '';
 		for ($i = 0; $i < $length; $i ++) {
-			$index = rand ( $min, $max );
-			$randomString .= $characters {$index};
+			$index = rand ($min, $max);
+            $randomString .= $characters[$index];
 		}
 		
-		return new self ( $randomString );
+		return new self($randomString);
 	}
 
 }

@@ -3,12 +3,13 @@
 namespace tagadvance\gilligan\collections;
 
 use PHPUnit\Framework\TestCase;
+use tagadvance\gilligan\base\UnsupportedOperationException;
 
 class ImmutableArrayTest extends TestCase {
 
     private $immutableArray;
 
-    function setUp() {
+    function setUp(): void {
         $this->immutableArray = new ImmutableArray([
                 0 => 'zero',
                 1 => 'one',
@@ -20,10 +21,9 @@ class ImmutableArrayTest extends TestCase {
         $this->assertEquals($expected = 'bar', $this->immutableArray['foo']);
     }
 
-    /**
-     * @expectedException tagadvance\gilligan\base\UnsupportedOperationException
-     */
     function testSetFails() {
+        $this->expectException(UnsupportedOperationException::class);
+
         $this->immutableArray[] = new \stdClass();
     }
 
@@ -31,10 +31,9 @@ class ImmutableArrayTest extends TestCase {
         $this->assertTrue(isset($this->immutableArray['foo']));
     }
 
-    /**
-     * @expectedException tagadvance\gilligan\base\UnsupportedOperationException
-     */
     function testUnsetFails() {
+        $this->expectException(UnsupportedOperationException::class);
+
         unset($this->immutableArray['foo']);
     }
 

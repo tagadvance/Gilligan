@@ -10,7 +10,7 @@ class HumanReadableByteCountMetricFormatter extends HumanReadableByteCountFormat
 	
 	protected function prefix(int $index): string {
 		$pre = self::PREFIXES;
-		return $pre {$index};
+		return $pre[$index];
 	}
 
 }

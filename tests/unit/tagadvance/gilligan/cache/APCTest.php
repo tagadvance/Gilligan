@@ -12,7 +12,7 @@ class APCTest extends TestCase {
 	
 	private $apc;
 	
-	function setUp() {
+	function setUp(): void {
 		$this->apc = new APC ();
 		$this->apc->clear ();
 	}
@@ -42,7 +42,7 @@ class APCTest extends TestCase {
 		$this->assertEquals ( $expected, $actual );
 	}
 	
-	function tearDown() {
+	function tearDown(): void {
 		$this->apc->clear ();
 	}
 	
