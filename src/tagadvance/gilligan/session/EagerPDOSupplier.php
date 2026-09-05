@@ -3,7 +3,8 @@
 namespace tagadvance\gilligan\session;
 
 /**
- * PDO supplier.
+ * Hands back a connection that was already open, so the cost is paid whether or not the session
+ * is ever touched.
  */
 class EagerPDOSupplier implements PDOSupplier
 {

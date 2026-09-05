@@ -7,6 +7,8 @@ use tagadvance\gilligan\cache\APC;
 /**
  * A drop-in replacement session handler which saves data to APC.
  * WARNING: APC is volatile!
+ * Expiry is the {@link APC} instance's time-to-live, not session.gc_maxlifetime, and
+ * {@link self::gc()} deliberately does nothing.
  */
 class APCSessionHandler implements \SessionHandlerInterface
 {
@@ -24,6 +26,10 @@ class APCSessionHandler implements \SessionHandlerInterface
 
     private $prefix;
 
+    /**
+     * @param string $prefix prepended to the session id to form the cache key, so several
+     *        applications can share one APC user cache
+     */
     public function __construct(APC $apc, string $prefix = 'session_')
     {
         $this->apc = $apc;
@@ -45,6 +51,10 @@ class APCSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    /**
+     * Yields the empty string — which PHP reads as a fresh session — for an id the cache has
+     * dropped.
+     */
     public function read($id): string|false
     {
         $key = $this->createKey($id);
@@ -57,6 +67,10 @@ class APCSessionHandler implements \SessionHandlerInterface
         return '';
     }
 
+    /**
+     * The metadata written alongside the data is only ever an empty remote address; the
+     * creation- and expiration-time keys are declared but never populated.
+     */
     public function write($id, $data): bool
     {
         $key = $this->createKey($id);

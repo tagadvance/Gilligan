@@ -46,11 +46,10 @@ class MySQLSessionHandler implements \SessionHandlerInterface
     private $options;
 
     /**
-     *
-     * @param \PDO $pdo
      * @param string $remoteAddress
      *            Remote IP address.
-     * @param int $options
+     * @param int $options bitmask of {@link self::BIND_TO_IP} and
+     *        {@link self::DO_NOTHING_ON_DESTROY}
      */
     public function __construct(PDOSupplier $pdoSupplier, string $remoteAddress, int $options = 0)
     {
@@ -59,6 +58,11 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         $this->options = $options;
     }
 
+    /**
+     * Creates the `sessions` table and its expiry index if they are missing, so the connection
+     * needs DDL rights on first use.
+     * Every other method calls this, and it does its work only once per instance.
+     */
     public function initialize()
     {
         if (! $this->isInitialized) {
@@ -114,6 +118,10 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return true;
     }
 
+    /**
+     * An expired row reads as a fresh session; under {@link self::BIND_TO_IP} a row belonging to
+     * another address raises an error whose severity follows the connection's ATTR_ERRMODE.
+     */
     public function read($session_id): string|false
     {
         $this->initialize();
@@ -179,6 +187,10 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return (int) ini_get('session.gc_maxlifetime') ?: 1440;
     }
 
+    /**
+     * Under {@link self::DO_NOTHING_ON_DESTROY} the row is expired in place rather than deleted,
+     * so the session data stays readable in the table.
+     */
     public function destroy($id): bool
     {
         $this->initialize();
@@ -197,6 +209,12 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return $statement->execute();
     }
 
+    /**
+     * Under {@link self::DO_NOTHING_ON_DESTROY} nothing is collected at all, so expired rows
+     * accumulate indefinitely.
+     *
+     * @return int|false rows deleted, or false when the delete failed
+     */
     public function gc($maxLifetime): int|false
     {
         if ($this->isOptionSelected(self::DO_NOTHING_ON_DESTROY)) {

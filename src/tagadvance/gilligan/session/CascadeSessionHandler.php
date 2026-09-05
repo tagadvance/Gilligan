@@ -22,7 +22,8 @@ class CascadeSessionHandler implements \SessionHandlerInterface
      * Session handlers should be ordered by priority.
      * Earlier elements will take precedence over later elements.
      *
-     * @param \SessionHandlerInterface ...$handlers
+     * @param \SessionHandlerInterface ...$handlers at least one, ordered most preferred first
+     * @throws \InvalidArgumentException when no handler is given
      */
     public function __construct(\SessionHandlerInterface ...$handlers)
     {
@@ -32,6 +33,10 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         $this->sessionHandlers = $handlers;
     }
 
+    /**
+     * Stops at the first handler that opens, so the rest are never opened at all — unlike every
+     * other method here, which visits all of them.
+     */
     public function open($save_path, $session_id): bool
     {
         foreach ($this->sessionHandlers as $handler) {
@@ -53,6 +58,10 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         return $isClosed;
     }
 
+    /**
+     * Takes the first non-empty answer, so a session whose stored data is '' or '0' reads as a
+     * miss and the search carries on down the chain.
+     */
     public function read($session_id): string|false
     {
         foreach ($this->sessionHandlers as $handler) {
@@ -64,6 +73,10 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         return '';
     }
 
+    /**
+     * Writes to every handler but reports only the first one's result, so a failure further down
+     * the chain is not visible to the caller.
+     */
     public function write($session_id, $session_data): bool
     {
         $i = 0;
@@ -85,6 +98,10 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         return $isDestroyed;
     }
 
+    /**
+     * @return int|false the total collected; a handler that reports false counts as zero, so a
+     *         failed collection is indistinguishable from an empty one
+     */
     public function gc($maxlifetime): int|false
     {
         $total = 0;

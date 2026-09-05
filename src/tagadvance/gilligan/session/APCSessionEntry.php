@@ -3,7 +3,8 @@
 namespace tagadvance\gilligan\session;
 
 /**
- * A drop-in replacement session handler which saves data to APC.
+ * One session as {@link APCSessionHandler} stores it: the id, the serialized session data, and
+ * a bag of metadata.
  */
 class APCSessionEntry implements \Serializable
 {
@@ -71,6 +72,10 @@ class APCSessionEntry implements \Serializable
         list($this->id, $this->data, $this->meta) = $data;
     }
 
+    /**
+     * Part of the deprecated \Serializable interface, which this class still declares alongside
+     * __serialize()/__unserialize(); PHP prefers the latter pair, so this is dead weight.
+     */
     public function serialize()
     {
         return serialize([
@@ -80,6 +85,9 @@ class APCSessionEntry implements \Serializable
         ]);
     }
 
+    /**
+     * Part of the deprecated \Serializable interface; see {@link self::serialize()}.
+     */
     public function unserialize($serialized)
     {
         list($this->id, $this->data, $this->meta) = unserialize($serialized);
