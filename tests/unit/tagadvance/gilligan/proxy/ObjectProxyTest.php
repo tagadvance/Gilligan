@@ -31,6 +31,27 @@ class ObjectProxyTest extends TestCase
         $proxy->foo = 'bar';
     }
 
+    public function testGetNullValuedProperty()
+    {
+        $source = new \stdClass();
+        $source->foo = null;
+        $proxy = new ObjectProxy($source);
+
+        $this->assertNull($actual = $proxy->foo);
+    }
+
+    public function testSetNullValuedPropertyWritesThrough()
+    {
+        $source = new \stdClass();
+        $source->foo = null;
+        $proxy = new ObjectProxy($source);
+
+        $proxy->foo = $expected = 'bar';
+
+        $this->assertEquals($expected, $actual = $source->foo);
+        $this->assertEquals($expected, $actual = $proxy->foo);
+    }
+
     public function testIsSet()
     {
         $source = new \stdClass();

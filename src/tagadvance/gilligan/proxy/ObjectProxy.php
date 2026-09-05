@@ -39,7 +39,7 @@ class ObjectProxy
     public function __get($name)
     {
         try {
-            return isset($this->value->$name) ? $this->value->$name : $this->attributes[$name];
+            return property_exists($this->value, $name) ? $this->value->$name : $this->attributes[$name];
         } finally {
             $when = System::currentTimeMillis();
             $event = new ObjectGetEvent($this->value, $when, $name);
@@ -52,7 +52,7 @@ class ObjectProxy
     public function __set($name, $value)
     {
         try {
-            if (isset($this->value->$name)) {
+            if (property_exists($this->value, $name)) {
                 $this->value->$name = $value;
             } else {
                 $this->attributes[$name] = $value;
