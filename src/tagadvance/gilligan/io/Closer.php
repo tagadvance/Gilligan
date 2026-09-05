@@ -10,14 +10,14 @@ final class Closer
 {
     private function __consruct() {}
 
-    public static function close(Closeable $closeable = null)
+    public static function close(?Closeable $closeable = null)
     {
         if ($closeable !== null) {
             $closeable->close();
         }
     }
 
-    public static function closeQuietly(Closeable $closeable = null)
+    public static function closeQuietly(?Closeable $closeable = null)
     {
         if ($closeable !== null) {
             try {

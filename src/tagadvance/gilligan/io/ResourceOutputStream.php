@@ -25,7 +25,7 @@ class ResourceOutputStream implements OutputStream
         $this->handle = $handle;
     }
 
-    public function write(string $string, int $length = null): int
+    public function write(string $string, ?int $length = null): int
     {
         if ($length === null) {
             $byteCount = fwrite($this->handle, $string);

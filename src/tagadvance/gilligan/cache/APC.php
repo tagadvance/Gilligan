@@ -78,7 +78,7 @@ class APC implements Cache
      * @param ByteCountFormatter $formatter
      * @return mixed
      */
-    public function toHumanReadableString($format = 'c', ByteCountFormatter $formatter = null): string
+    public function toHumanReadableString($format = 'c', ?ByteCountFormatter $formatter = null): string
     {
         if ($formatter == null) {
             $formatter = new HumanReadableByteCountFormatter();

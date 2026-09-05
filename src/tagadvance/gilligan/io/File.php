@@ -122,7 +122,7 @@ class File extends \SplFileInfo
      * @throws IOException
      * @return self
      */
-    public static function createTemporaryFile(string $fileName, string $directory = null): self
+    public static function createTemporaryFile(string $fileName, ?string $directory = null): self
     {
         if ($directory === null) {
             $directory = System::getTemporaryDirectory();

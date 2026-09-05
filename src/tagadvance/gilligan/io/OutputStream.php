@@ -12,6 +12,6 @@ interface OutputStream extends Flushable, Closeable
      * @throws IOException
      * @see http://php.net/manual/en/function.fwrite.php
      */
-    public function write(string $string, int $length = null): int;
+    public function write(string $string, ?int $length = null): int;
 
 }

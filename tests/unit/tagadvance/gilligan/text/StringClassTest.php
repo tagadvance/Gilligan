@@ -284,6 +284,22 @@ class StringClassTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testMatchCapturesGroups()
+    {
+        $string = new StringClass('abc123');
+        $count = $string->match('/^([a-z]+)(\\d+)$/', $matches);
+        $this->assertEquals(1, $count);
+        $this->assertEquals(['abc123', 'abc', '123'], $matches);
+    }
+
+    public function testMatchWithNoResultLeavesMatchesEmpty()
+    {
+        $string = new StringClass('abc');
+        $count = $string->match('/\\d+/', $matches);
+        $this->assertEquals(0, $count);
+        $this->assertEquals([], $matches);
+    }
+
     public function testSubstringofAlphabetFromIndex23()
     {
         $alphabet = new StringClass('abcdefghijklmnopqrstuvwxyz');

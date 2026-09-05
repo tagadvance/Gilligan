@@ -229,7 +229,7 @@ class StringClass
      * @return number
      * @see http://php.net/manual/en/function.preg-match.php
      */
-    public function match(string $pattern, array &$matches = null, int $flags = null, int $offset = null)
+    public function match(string $pattern, ?array &$matches = null, int $flags = 0, int $offset = 0)
     {
         return preg_match($pattern, $this->string, $matches, $flags, $offset);
     }
@@ -241,7 +241,7 @@ class StringClass
      * @param int $flags
      * @return array
      */
-    public function split(string $pattern, int $limit = null, int $flags = null): array
+    public function split(string $pattern, int $limit = -1, int $flags = 0): array
     {
         return preg_split($pattern, $this->string, $limit, $flags);
     }
@@ -283,7 +283,7 @@ class StringClass
      * @param int $limit
      * @return array
      */
-    public function explode($delimiter, int $limit = null): array
+    public function explode($delimiter, ?int $limit = null): array
     {
         $delimiter = self::toNativeString($delimiter);
         if ($limit == null) {
@@ -300,7 +300,7 @@ class StringClass
      * @return self
      * @see http://php.net/manual/en/function.substr.php
      */
-    public function substring(int $fromIndex, int $toIndex = null): self
+    public function substring(int $fromIndex, ?int $toIndex = null): self
     {
         if ($toIndex == null) {
             $toIndex = $this->length();
