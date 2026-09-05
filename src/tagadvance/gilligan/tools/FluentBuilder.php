@@ -72,13 +72,21 @@ class FluentBuilder
 
     /**
      * The chain's starting point: it calls the function with exactly the arguments given, since
-     * there is no value yet to prepend, and does not honour the <code>explicit</code> prefix.
+     * there is no value yet to prepend.
      *
-     * @throws \BadMethodCallException when no function exists under that name or its
-     *         snake_case form
+     * The <code>explicit</code> prefix substitutes the wrapped value for a {@link Blank}
+     * argument, and there is no wrapped value here, so it is rejected rather than silently
+     * behaving as though the prefix were absent.
+     *
+     * @throws \BadMethodCallException when the name carries the <code>explicit</code> prefix,
+     *         or when no function exists under that name or its snake_case form
      */
     public static function __callStatic($name, array $arguments): self
     {
+        if (StringClass::valueOf($name)->startsWith(self::EXPLICIT_PREFIX)) {
+            throw new \BadMethodCallException('the explicit prefix is only honoured on an instance');
+        }
+
         if (! function_exists($name)) {
             $name = ReflectionTools::camelCaseToUnderscore($name);
             if (! function_exists($name)) {

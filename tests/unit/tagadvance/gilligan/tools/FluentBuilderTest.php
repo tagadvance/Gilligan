@@ -40,4 +40,12 @@ class FluentBuilderTest extends TestCase
         $this->assertEquals($expected, $actual = $isPiInfinite());
     }
 
+
+    public function testExplicitPrefixIsRejectedStatically()
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('the explicit prefix is only honoured on an instance');
+
+        FluentBuilder::explicitBcdiv(Blank::getInstance(), 3, 2);
+    }
 }
