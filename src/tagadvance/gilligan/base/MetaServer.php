@@ -278,7 +278,7 @@ class MetaServer
      */
     public function https(): bool
     {
-        $https = $this->server ['HTTPS'];
+        $https = $this->server ['HTTPS'] ?? null;
         // Note: Note that when using ISAPI with IIS, the value will be off if
         // the request was not made through the HTTPS protocol.
         return ! empty($https) && $https !== 'off';
