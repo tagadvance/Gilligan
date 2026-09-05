@@ -23,6 +23,9 @@ Extensions::getInstance()->requires('apcu');
  * print $apc->__toString();
  * </code>
  *
+ * Merely autoloading this file asserts that <code>apcu</code> is installed, so a host without
+ * the extension fails at load time rather than at first use.
+ *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  */
 class APC implements Cache
@@ -31,6 +34,10 @@ class APC implements Cache
 
     private $timeToLive;
 
+    /**
+     * @param int $timeToLive seconds each entry written through this instance should live;
+     *        0, the default, means never expire
+     */
     public function __construct(int $timeToLive = 0)
     {
         $this->timeToLive = $timeToLive;
@@ -41,6 +48,10 @@ class APC implements Cache
         apcu_store($name, $value, $this->timeToLive);
     }
 
+    /**
+     * Yields false for a key that is absent, which a stored <code>false</code> is
+     * indistinguishable from; use <code>isset()</code> to tell them apart.
+     */
     public function __get($name)
     {
         return apcu_fetch($name);
@@ -56,14 +67,18 @@ class APC implements Cache
         return apcu_delete($name);
     }
 
+    /**
+     * Empties the whole user cache for the process, not just the entries written through this
+     * instance.
+     */
     public function clear()
     {
         apcu_clear_cache();
     }
 
     /**
+     * A var_export of every entry in the user cache, which on a warm cache is very large.
      *
-     * @return string
      * @see apcu_cache_info
      */
     public function __toString(): string
@@ -72,11 +87,13 @@ class APC implements Cache
     }
 
     /**
+     * Walks the entire user cache, so treat it as a diagnostic rather than something to call
+     * on a request path.
      *
-     * @param string $format
-     *            (default is ISO 8601)
-     * @param ByteCountFormatter $formatter
-     * @return mixed
+     * @param string $format date() format applied to every field whose name ends in `time`
+     *        (default is ISO 8601)
+     * @param ByteCountFormatter|null $formatter formats every `mem_` field; null selects
+     *        {@link HumanReadableByteCountFormatter}
      */
     public function toHumanReadableString($format = 'c', ?ByteCountFormatter $formatter = null): string
     {
