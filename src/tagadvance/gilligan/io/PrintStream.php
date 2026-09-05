@@ -6,7 +6,7 @@ use tagadvance\gilligan\base\UnsupportedOperationException;
 
 class PrintStream extends ResourceOutputStream
 {
-    public function __construct(OutputStream $delegatee)
+    public function __construct(ResourceOutputStream $delegatee)
     {
         parent::__construct($delegatee->handle);
     }
