@@ -162,9 +162,21 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         $statement->bindValue(':session_id', $id);
         $statement->bindValue(':ip', $this->remoteAddress);
         $statement->bindValue(':data', $data);
-        $expiration = get_cfg_var('session.gc_maxlifetime');
-        $statement->bindValue(':expiration', $expiration);
+        $statement->bindValue(':expiration', $this->getMaxLifetime(), \PDO::PARAM_INT);
         return $statement->execute();
+    }
+
+    /**
+     * The effective session lifetime in seconds.
+     *
+     * ini_get() rather than get_cfg_var(): get_cfg_var() reads only php.ini
+     * and ignores ini_set(), so a runtime-configured lifetime was silently
+     * bound as an INTERVAL of 0 SECOND, expiring every session as it was
+     * written.
+     */
+    protected function getMaxLifetime(): int
+    {
+        return (int) ini_get('session.gc_maxlifetime') ?: 1440;
     }
 
     public function destroy($id): bool
