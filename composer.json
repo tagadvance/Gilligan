@@ -10,13 +10,13 @@
 		}
 	],
 	"require" : {
-		"php" : "^8.1",
+		"php" : "^8.4",
 		"ext-apcu": "*",
 		"ext-bcmath": "*",
 		"ext-SPL": "*"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "^10.5.2"
+		"phpunit/phpunit" : "^13.3"
 	},
 	"autoload" : {
 		"psr-4" : {
