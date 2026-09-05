@@ -19,7 +19,7 @@ class ResourceInputStream implements InputStream
     public function read(int $length): string
     {
         $read = fread($this->handle, $length);
-        if ($read === false && feof($handle) === false) {
+        if ($read === false && feof($this->handle) === false) {
             throw new IOException();
         }
         return $read;
