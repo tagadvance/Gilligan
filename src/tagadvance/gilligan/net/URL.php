@@ -8,20 +8,21 @@ use tagadvance\gilligan\base\MetaServer;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class URL {
-	
-	private function __construct() {}
+class URL
+{
+    private function __construct() {}
 
     /**
      *
      * @return string
      * @see http://php.net/parse_url
      */
-    static function getRequestURL(MetaServer $server): string {
+    public static function getRequestURL(MetaServer $server): string
+    {
         // if (! System::isCGI()) {
         // throw new UnsupportedOperationException();
         // }
-        
+
         $isHttps = $server->https();
         $url = $isHttps ? 'https://' : 'http://';
         $url .= $server->httpHost();
@@ -31,5 +32,5 @@ class URL {
         $url .= $server->requestURI();
         return $url;
     }
-	
+
 }

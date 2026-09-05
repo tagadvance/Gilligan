@@ -2,8 +2,8 @@
 
 namespace tagadvance\gilligan\base;
 
-interface Hashable {
-
-    function hashCode();
+interface Hashable
+{
+    public function hashCode();
 
 }

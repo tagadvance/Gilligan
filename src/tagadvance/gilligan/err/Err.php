@@ -7,21 +7,23 @@ namespace tagadvance\gilligan\err;
  *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  */
-class Err {
-
+class Err
+{
     private function __construct() {}
 
-    static function interceptErrors(ErrorHandler $handler) {
+    public static function interceptErrors(ErrorHandler $handler)
+    {
         set_error_handler([
-                $handler,
-                'handleError'
+            $handler,
+            'handleError',
         ]);
     }
 
-    static function interceptUncaughtExceptions(UncaughtExceptionHandler $handler) {
+    public static function interceptUncaughtExceptions(UncaughtExceptionHandler $handler)
+    {
         set_exception_handler([
-                $handler,
-                'handleException'
+            $handler,
+            'handleException',
         ]);
     }
 

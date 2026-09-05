@@ -2,6 +2,4 @@
 
 namespace tagadvance\gilligan\observer;
 
-interface EventObserver {
-
-}
+interface EventObserver {}

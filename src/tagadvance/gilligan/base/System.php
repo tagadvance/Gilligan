@@ -5,17 +5,18 @@ namespace tagadvance\gilligan\base;
 use tagadvance\gilligan\time\SystemTimeProvider;
 
 /**
- * 
+ *
  * @author Tag <tagadvance+gilligan@gmail.com>
  *
  */
-class System {
-
+class System
+{
     /**
      *
      * @return integer Returns the current time in milliseconds.
      */
-    static function currentTimeMillis() {
+    public static function currentTimeMillis()
+    {
         $provider = new SystemTimeProvider();
         return $provider->currentTimeMillis();
     }
@@ -25,7 +26,8 @@ class System {
      * @return string
      * @see http://php.net/sys_get_temp_dir
      */
-    static function getTemporaryDirectory() {
+    public static function getTemporaryDirectory()
+    {
         return sys_get_temp_dir();
     }
 
@@ -34,16 +36,19 @@ class System {
      * @return array
      * @see http://www.php.net/manual/en/function.sys-getloadavg.php
      */
-    static function getLoadAverage() {
+    public static function getLoadAverage()
+    {
         return sys_getloadavg();
     }
 
-    static function isCLI() {
+    public static function isCLI()
+    {
         $sapi = php_sapi_name();
         return ($sapi === 'cli'); // TODO: discourage string literals
     }
 
-    static function isCGI() {
+    public static function isCGI()
+    {
         $sapi = php_sapi_name();
         return String::valueOf($sapi)->startsWith('cgi');
     }

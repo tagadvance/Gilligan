@@ -8,13 +8,13 @@ use tagadvance\gilligan\cache\APC;
  * A drop-in replacement session handler which saves data to APC.
  * WARNING: APC is volatile!
  */
-class APCSessionHandler implements \SessionHandlerInterface {
+class APCSessionHandler implements \SessionHandlerInterface
+{
+    public const META_KEY_CREATION_TIME = 'CREATION_TIME';
 
-    const META_KEY_CREATION_TIME = 'CREATION_TIME';
+    public const META_KEY_EXPIRATION_TIME = 'CREATION_TIME';
 
-    const META_KEY_EXPIRATION_TIME = 'CREATION_TIME';
-
-    const META_KEY_REMOTE_ADDRESS = 'REMOTE_ADDRESS';
+    public const META_KEY_REMOTE_ADDRESS = 'REMOTE_ADDRESS';
 
     /**
      *
@@ -24,24 +24,29 @@ class APCSessionHandler implements \SessionHandlerInterface {
 
     private $prefix;
 
-    function __construct(APC $apc, string $prefix = 'session_') {
+    public function __construct(APC $apc, string $prefix = 'session_')
+    {
         $this->apc = $apc;
         $this->prefix = $prefix;
     }
 
-    private function createKey(string $id): string {
+    private function createKey(string $id): string
+    {
         return $this->prefix . $id;
     }
 
-    function open($savePath, $name) {
+    public function open($savePath, $name)
+    {
         return true;
     }
 
-    function close() {
+    public function close()
+    {
         return true;
     }
 
-    function read($id) {
+    public function read($id)
+    {
         $key = $this->createKey($id);
         if (isset($this->apc->$key)) {
             $entry = $this->apc->$key;
@@ -52,7 +57,8 @@ class APCSessionHandler implements \SessionHandlerInterface {
         return '';
     }
 
-    function write($id, $data) {
+    public function write($id, $data)
+    {
         $key = $this->createKey($id);
         if (isset($this->apc->$key)) {
             $entry = $this->apc->$key;
@@ -61,15 +67,16 @@ class APCSessionHandler implements \SessionHandlerInterface {
             }
         } else {
             $meta = [
-                    self::META_KEY_REMOTE_ADDRESS => ''
+                self::META_KEY_REMOTE_ADDRESS => '',
             ];
             $entry = new APCSessionEntry($id, $data, $meta);
         }
-        
+
         $this->apc->$key = $entry;
     }
 
-    function destroy($id) {
+    public function destroy($id)
+    {
         $key = $this->createKey($id);
         unset($this->apc->$key);
     }
@@ -80,9 +87,10 @@ class APCSessionHandler implements \SessionHandlerInterface {
      * {@inheritdoc}
      * @see SessionHandlerInterface::gc()
      */
-    function gc($maxLifetime) {
+    public function gc($maxLifetime)
+    {
         // $lifetime = get_cfg_var('session.gc_maxlifetime');
-        
+
         // $cache = 'user';
         // $pattern = "/^$this->prefix/";
         // foreach (new \APCIterator($cache, $pattern) as $counter) {
@@ -92,7 +100,7 @@ class APCSessionHandler implements \SessionHandlerInterface {
         //         unset($apc->$key);
         //     }
         // }
-        
+
         return true;
     }
 

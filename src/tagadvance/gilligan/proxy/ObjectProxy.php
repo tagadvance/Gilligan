@@ -10,30 +10,34 @@ use tagadvance\gilligan\base\System;
  *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  */
-class ObjectProxy {
-
+class ObjectProxy
+{
     private $value;
 
     private $attributes = [];
 
     private $observers = [];
 
-    function __construct(\stdClass $value) {
+    public function __construct(\stdClass $value)
+    {
         $this->value = $value;
     }
 
-    function addObjectObserver(ObjectObserver $observer) {
+    public function addObjectObserver(ObjectObserver $observer)
+    {
         $this->observers[] = $observer;
     }
 
-    function removeObjectObserver(ObjectObserver $observer) {
+    public function removeObjectObserver(ObjectObserver $observer)
+    {
         $key = array_search($observer, $this->observers);
         if ($key !== false) {
             unset($this->observers[$key]);
         }
     }
 
-    function __get($name) {
+    public function __get($name)
+    {
         try {
             return isset($this->value->$name) ? $this->value->$name : $this->attributes[$name];
         } finally {
@@ -45,7 +49,8 @@ class ObjectProxy {
         }
     }
 
-    function __set($name, $value) {
+    public function __set($name, $value)
+    {
         try {
             if (isset($this->value->$name)) {
                 $this->value->$name = $value;
@@ -61,7 +66,8 @@ class ObjectProxy {
         }
     }
 
-    function __isset($name) {
+    public function __isset($name)
+    {
         try {
             return isset($this->value->$name) || isset($this->attributes[$name]);
         } finally {
@@ -73,7 +79,8 @@ class ObjectProxy {
         }
     }
 
-    function __unset($name) {
+    public function __unset($name)
+    {
         try {
             unset($this->value->$name, $this->attributes[$name]);
         } finally {
@@ -85,10 +92,11 @@ class ObjectProxy {
         }
     }
 
-    function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         $function = [
-                $this->value,
-                $name
+            $this->value,
+            $name,
         ];
         $arguments = func_get_args();
         try {
@@ -102,7 +110,8 @@ class ObjectProxy {
         }
     }
 
-    function __invoke() {
+    public function __invoke()
+    {
         $arguments = func_get_args();
         try {
             return call_user_func_array($this->value, $arguments);

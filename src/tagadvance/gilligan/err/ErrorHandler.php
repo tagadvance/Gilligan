@@ -6,8 +6,8 @@ namespace tagadvance\gilligan\err;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-interface ErrorHandler {
-
+interface ErrorHandler
+{
     /**
      *
      * @param int $errno
@@ -19,6 +19,6 @@ interface ErrorHandler {
      *         continue
      * @see http://www.php.net/manual/en/function.set-exception-handler.php
      */
-    function handleError($errno, $errstr, $errfile, $errline, $errcontext);
+    public function handleError($errno, $errstr, $errfile, $errline, $errcontext);
 
 }

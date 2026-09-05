@@ -5,21 +5,22 @@ namespace tagadvance\gilligan\net;
 use PHPUnit\Framework\TestCase;
 use tagadvance\gilligan\err\Throwables;
 
-class ThrowablesTest extends TestCase {
-
-    function testGetCausalChain() {
+class ThrowablesTest extends TestCase
+{
+    public function testGetCausalChain()
+    {
         $message = '';
         $code = 0;
         $e1 = new \Exception();
         $e2 = new \LogicException($message, $code, $e1);
         $e3 = new \RuntimeException($message, $code, $e2);
         $expected = [
-                $e1,
-                $e2,
-                $e3
+            $e1,
+            $e2,
+            $e3,
         ];
         $actual = Throwables::getCausalChain($e3);
-        
+
         // results in infinite recursion
         // $this->assertEquals($expected, $actual);
         // hence this weird assertion
@@ -29,7 +30,8 @@ class ThrowablesTest extends TestCase {
         $this->assertEquals(array_walk($expected, $callback), array_walk($actual, $callback));
     }
 
-    function testGetRootCause() {
+    public function testGetRootCause()
+    {
         $message = '';
         $code = 0;
         $expected = $e1 = new \Exception();

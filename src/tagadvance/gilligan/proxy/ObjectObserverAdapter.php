@@ -2,18 +2,18 @@
 
 namespace tagadvance\gilligan\proxy;
 
-class ObjectObserverAdapter implements ObjectObserver {
+class ObjectObserverAdapter implements ObjectObserver
+{
+    public function onUnset(ObjectUnsetEvent $event) {}
 
-    function onUnset(ObjectUnsetEvent $event) {}
+    public function onInvoke(ObjectInvokeEvent $event) {}
 
-    function onInvoke(ObjectInvokeEvent $event) {}
+    public function onGet(ObjectGetEvent $event) {}
 
-    function onGet(ObjectGetEvent $event) {}
+    public function onCall(ObjectCallEvent $event) {}
 
-    function onCall(ObjectCallEvent $event) {}
+    public function onIsSet(ObjectIsSetEvent $event) {}
 
-    function onIsSet(ObjectIsSetEvent $event) {}
-
-    function onSet(ObjectSetEvent $event) {}
+    public function onSet(ObjectSetEvent $event) {}
 
 }

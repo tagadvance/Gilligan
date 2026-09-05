@@ -5,27 +5,31 @@ namespace tagadvance\gilligan\base;
 use tagadvance\gilligan\traits\Singleton;
 
 /**
- * 
+ *
  * @author Tag <tagadvance+gilligan@gmail.com>
  *
  */
-final class Globals {
-    
+final class Globals
+{
     use Singleton;
 
-    function __get($name) {
+    public function __get($name)
+    {
         return $GLOBALS[$name];
     }
 
-    function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $GLOBALS[$name] = $value;
     }
 
-    function __isset($name) {
+    public function __isset($name)
+    {
         return isset($GLOBALS[$name]);
     }
 
-    function __unset($name) {
+    public function __unset($name)
+    {
         unset($GLOBALS[$name]);
     }
 

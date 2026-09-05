@@ -6,9 +6,9 @@ namespace tagadvance\gilligan\net;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class IPv4Address implements IPAddress {
-
-    const LOCALHOST = '127.0.0.1';
+class IPv4Address implements IPAddress
+{
+    public const LOCALHOST = '127.0.0.1';
 
     private $address;
 
@@ -17,21 +17,24 @@ class IPv4Address implements IPAddress {
      *
      * @param string $address
      */
-    function __construct(string $address) {
+    public function __construct(string $address)
+    {
         $this->address = ip2long($address);
     }
 
-    function getAddressLong(): int {
+    public function getAddressLong(): int
+    {
         return $this->address;
     }
 
-    function getAddress(): string {
+    public function getAddress(): string
+    {
         return long2ip($this->address);
     }
 
     /**
      * Is $this address in supnet $cidr?
-     * 
+     *
      * @param string $ip
      *            e.g. '127.0.0.1'
      * @param string $cidr
@@ -39,8 +42,9 @@ class IPv4Address implements IPAddress {
      * @return bool
      * @see http://stackoverflow.com/a/594134/625688
      */
-    function isInSubnet(string $cidr): bool {
-        list ($subnet, $bits) = explode('/', $cidr);
+    public function isInSubnet(string $cidr): bool
+    {
+        list($subnet, $bits) = explode('/', $cidr);
         $subnet = ip2long($subnet);
         $mask = - 1 << (32 - $bits);
         $subnet &= $mask; // nb: in case the supplied subnet wasn't correctly aligned
@@ -52,12 +56,13 @@ class IPv4Address implements IPAddress {
      * @return bool
      * @see http://en.wikipedia.org/wiki/Private_network
      */
-    function isPrivate(): bool {
+    public function isPrivate(): bool
+    {
         $privateSubnets = [
-                '10.0.0.0/8',
-                '127.0.0.0/8',
-                '172.16.0.0/12',
-                '192.168.0.0/16'
+            '10.0.0.0/8',
+            '127.0.0.0/8',
+            '172.16.0.0/12',
+            '192.168.0.0/16',
         ];
         foreach ($privateSubnets as $privateSubnet) {
             if ($this->isInSubnet($privateSubnet)) {
@@ -73,20 +78,22 @@ class IPv4Address implements IPAddress {
      * @return string
      * @see http://php.net/manual/en/function.gethostname.php
      */
-    static function getHostName(): string {
+    public static function getHostName(): string
+    {
         return gethostname();
     }
 
     /**
      * Get the IPv4 address corresponding to a given Internet host name.
-     * 
+     *
      * @param string $hostname
      *            The host name.
      * @throws \InvalidArgumentException
      * @return self
      * @see http://php.net/manual/en/function.gethostbyname.php
      */
-    static function getByName(string $hostname): IPAddress {
+    public static function getByName(string $hostname): IPAddress
+    {
         $host = gethostbyname($hostname);
         if ($host === $hostname) {
             throw new \InvalidArgumentException($hostname);
@@ -98,7 +105,8 @@ class IPv4Address implements IPAddress {
      *
      * @return self
      */
-    static function getLocalIP(): IPAddress {
+    public static function getLocalIP(): IPAddress
+    {
         $hostname = self::getHostName();
         return self::getByName($hostname);
     }

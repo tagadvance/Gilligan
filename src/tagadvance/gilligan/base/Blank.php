@@ -9,10 +9,10 @@ use tagadvance\gilligan\traits\Singleton;
  * I wanted to call it `Void`; however, that is a reserved word. =(
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
- *        
+ *
  */
-final class Blank {
-    
+final class Blank
+{
     use Singleton;
 
 }

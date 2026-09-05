@@ -4,18 +4,18 @@ namespace tagadvance\gilligan\proxy;
 
 use tagadvance\gilligan\observer\EventObserver;
 
-interface ObjectObserver extends EventObserver {
+interface ObjectObserver extends EventObserver
+{
+    public function onCall(ObjectCallEvent $event);
 
-    function onCall(ObjectCallEvent $event);
+    public function onGet(ObjectGetEvent $event);
 
-    function onGet(ObjectGetEvent $event);
+    public function onSet(ObjectSetEvent $event);
 
-    function onSet(ObjectSetEvent $event);
+    public function onIsSet(ObjectIsSetEvent $event);
 
-    function onIsSet(ObjectIsSetEvent $event);
+    public function onUnset(ObjectUnsetEvent $event);
 
-    function onUnset(ObjectUnsetEvent $event);
-
-    function onInvoke(ObjectInvokeEvent $event);
+    public function onInvoke(ObjectInvokeEvent $event);
 
 }

@@ -5,16 +5,18 @@ namespace tagadvance\gilligan\base;
 use PHPUnit\Framework\TestCase;
 use tagadvance\gilligan\base\Blank;
 
-class SingletonTest extends TestCase {
-    
-    function testGlobals() {
+class SingletonTest extends TestCase
+{
+    public function testGlobals()
+    {
         $globals = Globals::getInstance();
         $this->assertNotNull($globals);
     }
-    
-    function testBlank() {
+
+    public function testBlank()
+    {
         $blank = Blank::getInstance();
         $this->assertNotNull($blank);
     }
-    
+
 }

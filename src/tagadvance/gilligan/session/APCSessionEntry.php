@@ -5,8 +5,8 @@ namespace tagadvance\gilligan\session;
 /**
  * A drop-in replacement session handler which saves data to APC.
  */
-class APCSessionEntry implements \Serializable {
-
+class APCSessionEntry implements \Serializable
+{
     /**
      *
      * @var string
@@ -25,42 +25,50 @@ class APCSessionEntry implements \Serializable {
      */
     private $meta;
 
-    function __construct(string $id, $data, array $meta) {
+    public function __construct(string $id, $data, array $meta)
+    {
         $this->id = $id;
         $this->data = $data;
         $this->meta = $meta;
     }
 
-    function getId(): string {
+    public function getId(): string
+    {
         return $this->id;
     }
 
-    function getData() {
+    public function getData()
+    {
         return $this->data;
     }
 
-    function setData($data): void {
+    public function setData($data): void
+    {
         $this->data = $data;
     }
 
-    function getMeta(): array {
+    public function getMeta(): array
+    {
         return $this->meta;
     }
 
-    function setMeta(array $meta): void {
+    public function setMeta(array $meta): void
+    {
         $this->meta = $meta;
     }
 
-    function serialize() {
+    public function serialize()
+    {
         return serialize([
-                $this->id,
-                $this->data,
-                $this->meta
+            $this->id,
+            $this->data,
+            $this->meta,
         ]);
     }
 
-    function unserialize($serialized) {
-        list ($this->id, $this->data, $this->meta) = unserialize($serialized);
+    public function unserialize($serialized)
+    {
+        list($this->id, $this->data, $this->meta) = unserialize($serialized);
     }
 
 }

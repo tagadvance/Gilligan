@@ -7,8 +7,8 @@ namespace tagadvance\gilligan\err;
  * @author Tag <tagadvance+gilligan@gmail.com>
  * @see https://google.github.io/guava/releases/21.0/api/docs/com/google/common/base/Throwables.html
  */
-final class Throwables {
-
+final class Throwables
+{
     private function __consruct() {}
 
     /**
@@ -16,7 +16,8 @@ final class Throwables {
      * @param \Throwable $t
      * @return array
      */
-    static function getCausalChain(\Throwable $t): array {
+    public static function getCausalChain(\Throwable $t): array
+    {
         $causes = [];
         while ($t) {
             $causes[] = $t;
@@ -30,7 +31,8 @@ final class Throwables {
      * @param \Throwable $t
      * @return \Throwable
      */
-    static function getRootCause(\Throwable $t): \Throwable {
+    public static function getRootCause(\Throwable $t): \Throwable
+    {
         while ($cause = $t->getPrevious()) {
             $t = $cause;
         }

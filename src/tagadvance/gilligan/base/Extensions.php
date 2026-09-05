@@ -16,11 +16,11 @@ namespace tagadvance\gilligan\base;
  * </code>
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
- *         
+ *
  * @deprecated Because we should define dependencies in composer.json.
  */
-final class Extensions {
-
+final class Extensions
+{
     /**
      *
      * @var array
@@ -32,7 +32,8 @@ final class Extensions {
      * @param array $installedExtensions
      * @see http://php.net/get_loaded_extensions
      */
-    function __construct(array $installedExtensions) {
+    public function __construct(array $installedExtensions)
+    {
         $this->installedExtensions = $installedExtensions;
     }
 
@@ -45,7 +46,8 @@ final class Extensions {
      *            extensions which must be installed to proceed
      * @throws UnsupportedOperationException if one or more of the extensions are missing
      */
-    function requires(string ...$extensions) {
+    public function requires(string ...$extensions)
+    {
         $missingExtensions = [];
         foreach ($extensions as $extension) {
             if (! in_array($extension, $this->installedExtensions)) {
@@ -63,7 +65,8 @@ final class Extensions {
      *
      * @return self
      */
-    static function getInstance(): self {
+    public static function getInstance(): self
+    {
         static $instance = null;
         if ($instance === null) {
             $loaded_extensions = get_loaded_extensions();

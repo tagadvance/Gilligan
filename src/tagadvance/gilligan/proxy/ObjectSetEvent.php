@@ -2,8 +2,8 @@
 
 namespace tagadvance\gilligan\proxy;
 
-class ObjectSetEvent extends ObjectEventObject {
-
+class ObjectSetEvent extends ObjectEventObject
+{
     /**
      *
      * @var string
@@ -16,17 +16,20 @@ class ObjectSetEvent extends ObjectEventObject {
      */
     private $value;
 
-    function __construct(\stdClass $source, int $when, string $name, $value) {
+    public function __construct(\stdClass $source, int $when, string $name, $value)
+    {
         parent::__construct($source, $when);
         $this->name = $name;
         $this->value = $value;
     }
 
-    function getName(): string {
+    public function getName(): string
+    {
         return $this->name;
     }
 
-    function getValue() {
+    public function getValue()
+    {
         return $this->value;
     }
 

@@ -6,11 +6,11 @@ namespace tagadvance\gilligan\net;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-interface IPAddress {
+interface IPAddress
+{
+    public function getAddressLong(): int;
 
-    function getAddressLong(): int;
-
-    function getAddress(): string;
+    public function getAddress(): string;
 
     /**
      * Is $this address in supnet $cidr?
@@ -19,14 +19,14 @@ interface IPAddress {
      * @param string $cidr
      * @return bool
      */
-    function isInSubnet(string $cidr): bool;
+    public function isInSubnet(string $cidr): bool;
 
     /**
      *
      * @return bool
      * @see http://en.wikipedia.org/wiki/Private_network
      */
-    function isPrivate(): bool;
+    public function isPrivate(): bool;
 
     /**
      * Gets the host name
@@ -34,7 +34,7 @@ interface IPAddress {
      * @return string the host name
      * @see http://php.net/manual/en/function.gethostname.php
      */
-    static function getHostName(): string;
+    public static function getHostName(): string;
 
     /**
      * Get the IP address corresponding to a given Internet host name.
@@ -43,12 +43,12 @@ interface IPAddress {
      *            The host name.
      * @return self
      */
-    static function getByName(string $hostname): IPAddress;
+    public static function getByName(string $hostname): IPAddress;
 
     /**
      *
      * @return self
      */
-    static function getLocalIP(): IPAddress;
+    public static function getLocalIP(): IPAddress;
 
 }

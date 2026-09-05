@@ -9,15 +9,16 @@ use tagadvance\gilligan\base\UnsupportedOperationException;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class HttpCompression {
-
-    static function initializeDefault() {
+class HttpCompression
+{
+    public static function initializeDefault()
+    {
         $http = new self();
         $encoding = $_SERVER['HTTP_ACCEPT_ENCODING'] ?? '';
         $http->initialize($encoding);
     }
 
-    function __construct() {}
+    public function __construct() {}
 
     /**
      *
@@ -26,7 +27,8 @@ class HttpCompression {
      * @throws UnsupportedOperationException
      * @see http://stackoverflow.com/questions/1862641/compressing-content-with-php-ob-start-vs-apache-deflate-gzip
      */
-    function initialize(string $encoding, int $level = 6) {
+    public function initialize(string $encoding, int $level = 6)
+    {
         /**
          * You cannot use both ob_gzhandler() and zlib.output_compression.
          * Also note that using zlib.output_compression is preferred over ob_gzhandler().
@@ -35,7 +37,7 @@ class HttpCompression {
             $message = 'using default compression';
             trigger_error($message, E_USER_WARNING);
         }
-        
+
         /**
          * ignore deflate
          *
@@ -51,7 +53,7 @@ class HttpCompression {
                 return;
             }
         }
-        
+
         $message = 'compression is not supported';
         throw new UnsupportedOperationException($message);
     }

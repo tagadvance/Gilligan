@@ -20,17 +20,19 @@ use tagadvance\gilligan\base\Blank;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class FluentBuilder {
-
-    const EXPLICIT_PREFIX = 'explicit';
+class FluentBuilder
+{
+    public const EXPLICIT_PREFIX = 'explicit';
 
     private $value;
 
-    static function valueOf($value) {
+    public static function valueOf($value)
+    {
         return new FluentBuilder($value);
     }
 
-    function __construct($value) {
+    public function __construct($value)
+    {
         $this->value = $value;
     }
 
@@ -41,7 +43,8 @@ class FluentBuilder {
      * @throws \BadMethodCallException
      * @return self
      */
-    function __call($name, array $arguments): self {
+    public function __call($name, array $arguments): self
+    {
         $isExplicit = StringClass::valueOf($name)->startsWith(self::EXPLICIT_PREFIX);
         if ($isExplicit) {
             $name = substr($name, $start = strlen(self::EXPLICIT_PREFIX));
@@ -50,14 +53,14 @@ class FluentBuilder {
                 return $e instanceof Blank ? $this->value : $e;
             }, $arguments);
         }
-        
+
         if (! function_exists($name)) {
             $name = ReflectionTools::camelCaseToUnderscore($name);
             if (! function_exists($name)) {
                 throw new \BadMethodCallException($name);
             }
         }
-        
+
         if (! $isExplicit) {
             array_unshift($arguments, $this->value);
         }
@@ -72,19 +75,21 @@ class FluentBuilder {
      * @throws \BadMethodCallException
      * @return self
      */
-    static function __callStatic($name, array $arguments): self {
+    public static function __callStatic($name, array $arguments): self
+    {
         if (! function_exists($name)) {
             $name = ReflectionTools::camelCaseToUnderscore($name);
             if (! function_exists($name)) {
                 throw new \BadMethodCallException($name);
             }
         }
-        
+
         $result = call_user_func_array($name, $arguments);
         return new FluentBuilder($result);
     }
 
-    function __invoke() {
+    public function __invoke()
+    {
         return $this->value;
     }
 

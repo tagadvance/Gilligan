@@ -8,43 +8,52 @@ use tagadvance\gilligan\base\UnsupportedOperationException;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class ImmutableArray implements \ArrayAccess {
-
+class ImmutableArray implements \ArrayAccess
+{
     private $array;
 
-    function __construct(array $array) {
+    public function __construct(array $array)
+    {
         $this->array = $array;
     }
 
-    function __get($name) {
+    public function __get($name)
+    {
         return $this->offsetGet($name);
     }
 
-    function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return $this->array[$offset];
     }
 
-    function __set($name, $value) {
+    public function __set($name, $value)
+    {
         $this->offsetSet($name, $value);
     }
 
-    function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         throw new UnsupportedOperationException('immutable');
     }
 
-    function __isset($name) {
+    public function __isset($name)
+    {
         return $this->offsetExists($name);
     }
 
-    function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->array[$offset]);
     }
 
-    function __unset($name) {
+    public function __unset($name)
+    {
         $this->offsetUnset($name);
     }
 
-    function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         throw new UnsupportedOperationException('immutable');
     }
 

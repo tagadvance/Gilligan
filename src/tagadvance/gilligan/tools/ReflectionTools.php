@@ -2,8 +2,8 @@
 
 namespace tagadvance\gilligan\tools;
 
-class ReflectionTools {
-
+class ReflectionTools
+{
     private function __construct() {}
 
     /**
@@ -11,7 +11,8 @@ class ReflectionTools {
      * @param string $string
      * @return string
      */
-    static function camelCaseToUnderscore($string) {
+    public static function camelCaseToUnderscore($string)
+    {
         $tokens = preg_split('/(?=[A-Z])/', $string);
         array_walk($tokens, function (&$token) {
             $token = strtolower($token);
@@ -30,7 +31,8 @@ class ReflectionTools {
      * @return string
      * @see https://gist.github.com/paulferrett/8141290
      */
-    static function underscoreToCamelCase($string, $capitaliseFirstCharacter = false) {
+    public static function underscoreToCamelCase($string, $capitaliseFirstCharacter = false)
+    {
         if ($capitaliseFirstCharacter) {
             $string[0] = strtoupper($string[0]);
         }

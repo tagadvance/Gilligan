@@ -4,21 +4,21 @@ namespace tagadvance\gilligan\session;
 
 /**
  * A drop-in replacement session handler which persists data to a MySQL database.
- * 
+ *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-class MySQLSessionHandler implements \SessionHandlerInterface {
-
+class MySQLSessionHandler implements \SessionHandlerInterface
+{
     /**
      * Prevents a session from being hijacked by another IP address.
      */
-    const BIND_TO_IP = 1;
+    public const BIND_TO_IP = 1;
 
     /**
      * Invalidates a session instead of deleting it.
      * This is useful for debugging.
      */
-    const DO_NOTHING_ON_DESTROY = 2;
+    public const DO_NOTHING_ON_DESTROY = 2;
 
     /**
      *
@@ -52,13 +52,15 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
      *            Remote IP address.
      * @param int $options
      */
-    function __construct(PDOSupplier $pdoSupplier, string $remoteAddress, int $options = 0) {
+    public function __construct(PDOSupplier $pdoSupplier, string $remoteAddress, int $options = 0)
+    {
         $this->pdoSupplier = $pdoSupplier;
         $this->remoteAddress = $remoteAddress;
         $this->options = $options;
     }
 
-    function initialize() {
+    public function initialize()
+    {
         if (! $this->isInitialized) {
             $this->createTableIfNotExists();
             $this->createIndexIfNotExists();
@@ -66,7 +68,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         }
     }
 
-    private function createTableIfNotExists() {
+    private function createTableIfNotExists()
+    {
         $pdo = $this->pdoSupplier->getPDO();
         // http://stackoverflow.com/questions/1076714/max-length-for-client-ip-address
         // https://stackoverflow.com/a/23033086/625688
@@ -82,7 +85,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         return $statement->execute();
     }
 
-    private function createIndexIfNotExists() {
+    private function createIndexIfNotExists()
+    {
         $pdo = $this->pdoSupplier->getPDO();
         $sql = 'SHOW INDEX FROM `sessions` WHERE Key_name = "index_expiration";';
         $statement = $pdo->prepare($sql);
@@ -100,19 +104,23 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         return false;
     }
 
-    function __destruct() {
+    public function __destruct()
+    {
         unset($pdo, $this->options);
     }
 
-    function open($savePath, $name) {
+    public function open($savePath, $name)
+    {
         return true;
     }
 
-    function close() {
+    public function close()
+    {
         return true;
     }
 
-    function read($session_id) {
+    public function read($session_id)
+    {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
         $sql = 'SELECT `data`, `ip` FROM `sessions` WHERE `session_id` = :session_id AND `expiration_time` > NOW()';
@@ -133,7 +141,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
     /**
      * Honor the PDO ATTR_ERRMODE.
      */
-    private function triggerError($message) {
+    private function triggerError($message)
+    {
         $pdo = $this->pdoSupplier->getPDO();
         $mode = $pdo->getAttribute(\PDO::ATTR_ERRMODE);
         switch ($mode) {
@@ -149,7 +158,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         }
     }
 
-    function write($id, $data) {
+    public function write($id, $data)
+    {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
         $sql = 'INSERT INTO `sessions` (`session_id`, `ip`, `data`, `creation_time`, `expiration_time`) VALUES (:session_id, :ip, :data, NULL, ADDDATE(NOW(), INTERVAL :expiration SECOND)) ON DUPLICATE KEY UPDATE `data` = VALUES (`data`), `expiration_time` = VALUES (`expiration_time`)';
@@ -162,28 +172,30 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         return $statement->execute();
     }
 
-    function destroy($id) {
+    public function destroy($id)
+    {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
-        
+
         if ($this->isOptionSelected(self::DO_NOTHING_ON_DESTROY)) {
             $sql = 'UPDATE `sessions` SET `expiration_time` = NOW() WHERE `session_id` = :session_id';
             $statement = $pdo->prepare($sql);
             $statement->bindValue(':session_id', $id);
             return $statement->execute();
         }
-        
+
         $sql = 'DELETE FROM `sessions` WHERE `session_id` = :session_id';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':session_id', $id);
         return $statement->execute();
     }
 
-    function gc($maxLifetime) {
+    public function gc($maxLifetime)
+    {
         if ($this->isOptionSelected(self::DO_NOTHING_ON_DESTROY)) {
             return true;
         }
-        
+
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
         $sql = 'DELETE FROM `sessions` WHERE `expiration_time` < NOW()';
@@ -191,7 +203,8 @@ class MySQLSessionHandler implements \SessionHandlerInterface {
         return $statement->execute();
     }
 
-    private function isOptionSelected(int $option) {
+    private function isOptionSelected(int $option)
+    {
         return ($this->options & $option) == $option;
     }
 

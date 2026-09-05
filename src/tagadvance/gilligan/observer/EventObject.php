@@ -2,8 +2,8 @@
 
 namespace tagadvance\gilligan\observer;
 
-class EventObject {
-
+class EventObject
+{
     /**
      *
      * @var \stdClass
@@ -16,16 +16,19 @@ class EventObject {
      */
     private $when;
 
-    function __construct(\stdClass $source, int $when) {
+    public function __construct(\stdClass $source, int $when)
+    {
         $this->source = $source;
         $this->when = $when;
     }
 
-    function getSource(): \stdClass {
+    public function getSource(): \stdClass
+    {
         return $this->source;
     }
 
-    function getWhen(): int {
+    public function getWhen(): int
+    {
         return $this->when;
     }
 

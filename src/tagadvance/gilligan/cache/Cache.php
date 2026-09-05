@@ -7,6 +7,4 @@ namespace tagadvance\gilligan\cache;
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
-interface Cache {
-
-}
+interface Cache {}

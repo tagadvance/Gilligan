@@ -5,8 +5,8 @@ namespace tagadvance\gilligan\session;
 /**
  * PDO supplier.
  */
-interface PDOSupplier {
-
-    function getPDO(): \PDO;
+interface PDOSupplier
+{
+    public function getPDO(): \PDO;
 
 }
