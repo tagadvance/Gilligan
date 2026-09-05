@@ -5,7 +5,6 @@ namespace tagadvance\gilligan\cache;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Note: this test requires `--define apc.enable_cli=1`
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
 class APCTest extends TestCase
@@ -14,8 +13,12 @@ class APCTest extends TestCase
 
     public function setUp(): void
     {
+        if (!apcu_enabled()) {
+            $this->markTestSkipped('APCu is not enabled on the CLI; run with apc.enable_cli=1');
+        }
+
         $this->apc = new APC();
-        $this->apc->clear();
+        $this->apc?->clear();
     }
 
     public function testSetAndGet()
@@ -48,7 +51,7 @@ class APCTest extends TestCase
 
     public function tearDown(): void
     {
-        $this->apc->clear();
+        $this->apc?->clear();
     }
 
 }

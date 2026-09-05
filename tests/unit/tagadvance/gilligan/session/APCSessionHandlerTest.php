@@ -21,6 +21,10 @@ class APCSessionHandlerTest extends TestCase
 
     public function setUp(): void
     {
+        if (!apcu_enabled()) {
+            $this->markTestSkipped('APCu is not enabled on the CLI; run with apc.enable_cli=1');
+        }
+
         apcu_clear_cache();
 
         $timeToLive = get_cfg_var('session.gc_maxlifetime');
