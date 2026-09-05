@@ -21,4 +21,15 @@ class ErrTest extends TestCase
         }
     }
 
+    public function testUncaughtExceptionHandlerAcceptsErrors()
+    {
+        $error = new \Error('boom');
+        $handler = $this->createMock(UncaughtExceptionHandler::class);
+        $handler->expects($this->once())
+            ->method('handleException')
+            ->with($error);
+
+        $handler->handleException($error);
+    }
+
 }

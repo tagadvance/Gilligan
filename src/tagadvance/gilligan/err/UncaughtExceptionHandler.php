@@ -10,9 +10,9 @@ interface UncaughtExceptionHandler
 {
     /**
      *
-     * @param Exception $e
-     * @see http://php.net/manual/en/function.set-error-handler.php
+     * @param \Throwable $e
+     * @see http://php.net/manual/en/function.set-exception-handler.php
      */
-    public function handleException(\Exception $e);
+    public function handleException(\Throwable $e);
 
 }
