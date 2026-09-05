@@ -1,4 +1,5 @@
 [![CI](https://github.com/tagadvance/Gilligan/actions/workflows/ci.yml/badge.svg)](https://github.com/tagadvance/Gilligan/actions/workflows/ci.yml)
+[![Packagist](https://img.shields.io/packagist/v/tagadvance/gilligan.svg)](https://packagist.org/packages/tagadvance/gilligan)
 [![PHP Version](https://img.shields.io/badge/php-%3E%3D8.4-8892BF)](https://www.php.net/supported-versions.php)
 [![License](https://img.shields.io/github/license/tagadvance/Gilligan)](LICENSE)
 
@@ -13,12 +14,12 @@ The design of some of these tools was heavily influenced by libraries like [Apac
 ## Download / Install
 The easiest way to install Gilligan is via Composer:
 ```bash
-composer require "tagadvance/gilligan:dev-master"
+composer require "tagadvance/gilligan:^1.0"
 ```
 ```json
 {
     "require": {
-        "tagadvance/gilligan": "dev-master"
+        "tagadvance/gilligan": "^1.0"
     }
 }
 ```
