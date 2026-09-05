@@ -2,6 +2,7 @@
 
 namespace tagadvance\gilligan\net;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class IPv4AddressTest extends TestCase {
@@ -15,9 +16,7 @@ class IPv4AddressTest extends TestCase {
 		$this->assertEquals($expected, $actual = $address);
 	}
 	
-	/**
-	 * @dataProvider validSubnetProvider
-	 */
+	#[DataProvider('validSubnetProvider')]
 	function testIsInSubnet(string $address, string $cidr) {
 		$ip = new IPv4Address ( $address );
 		$condition = $ip->isInSubnet ( $cidr );
@@ -45,9 +44,7 @@ class IPv4AddressTest extends TestCase {
 		];
 	}
 	
-	/**
-	 * @dataProvider invalidSubnetProvider
-	 */
+	#[DataProvider('invalidSubnetProvider')]
 	function testIsNotInSubnet(string $address, string $cidr) {
 		$ip = new IPv4Address ( $address );
 		$condition = $ip->isInSubnet ( $cidr );
@@ -67,9 +64,7 @@ class IPv4AddressTest extends TestCase {
 		];
 	}
 	
-	/**
-	 * @dataProvider privateAddresses
-	 */
+	#[DataProvider('privateAddresses')]
 	function testIsPrivate(string $address) {
 		$ip = new IPv4Address ( $address );
 		$isPrivate = $ip->isPrivate();
@@ -105,9 +100,7 @@ class IPv4AddressTest extends TestCase {
 		];
 	}
 	
-	/**
-	 * @dataProvider publicAddresses
-	 */
+	#[DataProvider('publicAddresses')]
 	function testIsPublic(string $address) {
 		$ip = new IPv4Address ( $address );
 		$isPrivate = $ip->isPrivate();
