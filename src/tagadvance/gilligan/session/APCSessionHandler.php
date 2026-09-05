@@ -12,7 +12,7 @@ class APCSessionHandler implements \SessionHandlerInterface
 {
     public const META_KEY_CREATION_TIME = 'CREATION_TIME';
 
-    public const META_KEY_EXPIRATION_TIME = 'CREATION_TIME';
+    public const META_KEY_EXPIRATION_TIME = 'EXPIRATION_TIME';
 
     public const META_KEY_REMOTE_ADDRESS = 'REMOTE_ADDRESS';
 
