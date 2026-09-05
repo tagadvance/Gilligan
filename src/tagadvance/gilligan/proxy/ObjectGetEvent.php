@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * A property read through the proxy.
+ */
 class ObjectGetEvent extends ObjectEventObject
 {
     /**

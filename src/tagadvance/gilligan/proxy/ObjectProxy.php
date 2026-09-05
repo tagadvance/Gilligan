@@ -7,6 +7,8 @@ use tagadvance\gilligan\base\System;
 /**
  * Wraps around and proxies assignments, dereferences, calls, and invocations to the value object.
  * Assignments and dereferences that would otherwise result in an "PHP Catchable fatal error: value object cannot have properties" are stored locally.
+ * Observers are notified from a <code>finally</code>, so they see an operation that threw as
+ * well as one that succeeded.
  *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  */
@@ -28,6 +30,10 @@ class ObjectProxy
         $this->observers[] = $observer;
     }
 
+    /**
+     * Matches loosely, so where two observers compare equal the first registered one is the one
+     * dropped, whichever instance was passed.
+     */
     public function removeObjectObserver(ObjectObserver $observer)
     {
         $key = array_search($observer, $this->observers);
@@ -36,6 +42,10 @@ class ObjectProxy
         }
     }
 
+    /**
+     * Reads a real property of the wrapped object where one exists, otherwise the local
+     * attribute bag; a name in neither warns and yields null.
+     */
     public function __get($name)
     {
         try {
@@ -49,6 +59,10 @@ class ObjectProxy
         }
     }
 
+    /**
+     * Writes through to a real property of the wrapped object where one exists; any other name
+     * lands in the proxy's own attribute bag and is never visible on the wrapped object.
+     */
     public function __set($name, $value)
     {
         try {
@@ -92,6 +106,10 @@ class ObjectProxy
         }
     }
 
+    /**
+     * Forwards to the wrapped object, which therefore has to be a subclass of stdClass that
+     * declares the method — a plain stdClass has none.
+     */
     public function __call($name, $arguments)
     {
         $function = [
@@ -109,6 +127,10 @@ class ObjectProxy
         }
     }
 
+    /**
+     * Calls the wrapped object, which therefore has to be a subclass of stdClass declaring
+     * __invoke(); the arguments are forwarded but are not recorded on the event.
+     */
     public function __invoke()
     {
         $arguments = func_get_args();

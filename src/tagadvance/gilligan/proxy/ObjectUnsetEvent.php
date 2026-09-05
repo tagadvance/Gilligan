@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * An unset() against the proxy.
+ */
 class ObjectUnsetEvent extends ObjectEventObject
 {
     /**

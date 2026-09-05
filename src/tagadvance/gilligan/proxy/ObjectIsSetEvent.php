@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * An isset() test against the proxy.
+ */
 class ObjectIsSetEvent extends ObjectEventObject
 {
     /**

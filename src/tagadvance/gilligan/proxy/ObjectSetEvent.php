@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * A property write through the proxy.
+ */
 class ObjectSetEvent extends ObjectEventObject
 {
     /**
@@ -11,8 +14,7 @@ class ObjectSetEvent extends ObjectEventObject
     private $name;
 
     /**
-     *
-     * @var unknown
+     * @var mixed
      */
     private $value;
 
@@ -28,6 +30,9 @@ class ObjectSetEvent extends ObjectEventObject
         return $this->name;
     }
 
+    /**
+     * @return mixed the value that was assigned
+     */
     public function getValue()
     {
         return $this->value;

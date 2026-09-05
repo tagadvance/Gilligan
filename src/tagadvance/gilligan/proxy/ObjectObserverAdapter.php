@@ -2,6 +2,10 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * A do-nothing {@link ObjectObserver}, so an implementor need only override the hooks it cares
+ * about.
+ */
 class ObjectObserverAdapter implements ObjectObserver
 {
     public function onUnset(ObjectUnsetEvent $event) {}

@@ -4,6 +4,9 @@ namespace tagadvance\gilligan\proxy;
 
 use tagadvance\gilligan\io\PrintStream;
 
+/**
+ * Traces everything the proxy sees to a stream, one line per event.
+ */
 class PrintObjectObserver implements ObjectObserver
 {
     private const DATE_FORMAT = 'Y-m-d H:i:s';
@@ -12,6 +15,10 @@ class PrintObjectObserver implements ObjectObserver
 
     private $name;
 
+    /**
+     * @param string $name label to stand in for the proxied object in the trace; it is not read
+     *        from the object itself
+     */
     public function __construct(PrintStream $stream, string $name)
     {
         $this->out = $stream;
@@ -61,6 +68,10 @@ class PrintObjectObserver implements ObjectObserver
         $this->out->printFormatted($pattern, $this->name, $event->getName(), $when);
     }
 
+    /**
+     * Renders the assigned value with %s, so an array warns and prints as "Array" and a
+     * non-Stringable object raises an Error.
+     */
     public function onSet(ObjectSetEvent $event)
     {
         $pattern = 'set: %s->%s = %s at %s' . PHP_EOL;

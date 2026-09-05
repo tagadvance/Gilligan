@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\proxy;
 
+/**
+ * A method call that reached the proxied object.
+ */
 class ObjectCallEvent extends ObjectEventObject
 {
     /**
@@ -28,6 +31,9 @@ class ObjectCallEvent extends ObjectEventObject
         return $this->name;
     }
 
+    /**
+     * @return array the call's arguments, positionally, exactly as the caller passed them
+     */
     public function getArguments(): array
     {
         return $this->arguments;
