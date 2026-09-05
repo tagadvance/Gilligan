@@ -5,6 +5,7 @@ namespace tagadvance\gilligan\net;
 use tagadvance\gilligan\base\MetaServer;
 
 /**
+ * Reassembles the absolute URL of the current request.
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
@@ -13,9 +14,9 @@ class URL
     private function __construct() {}
 
     /**
-     *
-     * @return string
-     * @see http://php.net/parse_url
+     * Built from the Host header and the request URI, both of which the client controls, so do
+     * not use the result in a security decision or as a redirect target.
+     * The port is omitted when it is the default for the scheme.
      */
     public static function getRequestURL(MetaServer $server): string
     {
