@@ -60,3 +60,6 @@ local.properties
 
 # JetBrains
 /.idea/
+
+# php-cs-fixer
+/.php-cs-fixer.cache

@@ -16,7 +16,9 @@
 		"ext-SPL": "*"
 	},
 	"require-dev" : {
-		"phpunit/phpunit" : "^13.3"
+		"phpunit/phpunit" : "^13.3",
+		"phpstan/phpstan": "^2.2",
+		"friendsofphp/php-cs-fixer": "^3.95"
 	},
 	"autoload" : {
 		"psr-4" : {
