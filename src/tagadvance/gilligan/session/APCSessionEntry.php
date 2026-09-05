@@ -57,6 +57,20 @@ class APCSessionEntry implements \Serializable
         $this->meta = $meta;
     }
 
+    public function __serialize(): array
+    {
+        return [
+            $this->id,
+            $this->data,
+            $this->meta,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        list($this->id, $this->data, $this->meta) = $data;
+    }
+
     public function serialize()
     {
         return serialize([

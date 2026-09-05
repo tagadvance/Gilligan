@@ -58,6 +58,16 @@ class ArrayProxy implements \ArrayAccess, \Serializable
         unset($this->array[$offset]);
     }
 
+    public function __serialize(): array
+    {
+        return [$this->array];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->array = $data[0];
+    }
+
     public function serialize()
     {
         return serialize($this->array);
