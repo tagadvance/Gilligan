@@ -1,0 +1,17 @@
+parameters:
+    # Level 2 reports 29 errors, mostly unresolved types behind the untyped
+    # properties in the collections and proxy classes. That is the next
+    # ratchet, not a regression.
+    level: 1
+    paths:
+        - src
+        - tests
+    excludePaths:
+        # Declares namespace tagadvance\gilligan\util, so PSR-4 cannot load it
+        # and nothing in the library references it. Broken and unfinished.
+        - src/tagadvance/gilligan/time/TimeUnit.php
+    ignoreErrors:
+        # FluentBuilder dispatches every static call through __callStatic().
+        -
+            identifier: staticMethod.notFound
+            path: tests/unit/tagadvance/gilligan/tools/FluentBuilderTest.php
