@@ -395,4 +395,25 @@ class StringClassTest extends TestCase
         $this->assertEquals('bbb', $actual());
     }
 
+    public function testSubstringWithToIndexZeroIsEmpty()
+    {
+        $alphabet = new StringClass('abcdefghijklmnopqrstuvwxyz');
+        $actual = $alphabet->substring($fromIndex = 0, $toIndex = 0);
+        $this->assertEquals('', $actual());
+    }
+
+    public function testSubstringWithToIndexZeroBeforeFromIndexThrows()
+    {
+        $alphabet = new StringClass('abcdefghijklmnopqrstuvwxyz');
+        $this->expectException(\OutOfBoundsException::class);
+        $alphabet->substring($fromIndex = 3, $toIndex = 0);
+    }
+
+    public function testExplodeWithLimitZero()
+    {
+        $string = new StringClass('a,b,c');
+        $actual = $string->explode($delimiter = ',', $limit = 0);
+        $this->assertEquals(['a,b,c'], $actual);
+    }
+
 }

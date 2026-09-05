@@ -286,7 +286,7 @@ class StringClass
     public function explode($delimiter, ?int $limit = null): array
     {
         $delimiter = self::toNativeString($delimiter);
-        if ($limit == null) {
+        if ($limit === null) {
             return explode($delimiter, $this->string);
         }
         return explode($delimiter, $this->string, $limit);
@@ -302,7 +302,7 @@ class StringClass
      */
     public function substring(int $fromIndex, ?int $toIndex = null): self
     {
-        if ($toIndex == null) {
+        if ($toIndex === null) {
             $toIndex = $this->length();
         } elseif ($toIndex < $fromIndex) {
             throw new \OutOfBoundsException("!($fromIndex <= $toIndex)");
