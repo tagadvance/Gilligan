@@ -32,23 +32,28 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         $this->sessionHandlers = $handlers;
     }
 
-    public function open($save_path, $session_id)
+    public function open($save_path, $session_id): bool
     {
         foreach ($this->sessionHandlers as $handler) {
             if ($handler->open($save_path, $session_id)) {
-                break;
+                return true;
             }
         }
+
+        return false;
     }
 
-    public function close()
+    public function close(): bool
     {
+        $isClosed = true;
         foreach ($this->sessionHandlers as $handler) {
-            $handler->close();
+            $isClosed = $handler->close() && $isClosed;
         }
+
+        return $isClosed;
     }
 
-    public function read($session_id)
+    public function read($session_id): string|false
     {
         foreach ($this->sessionHandlers as $handler) {
             $read = $handler->read($session_id);
@@ -59,7 +64,7 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         return '';
     }
 
-    public function write($session_id, $session_data)
+    public function write($session_id, $session_data): bool
     {
         $i = 0;
         $result = $this->sessionHandlers[$i++]->write($session_id, $session_data);
@@ -70,18 +75,27 @@ class CascadeSessionHandler implements \SessionHandlerInterface
         return $result;
     }
 
-    public function destroy($session_id)
+    public function destroy($session_id): bool
     {
+        $isDestroyed = true;
         foreach ($this->sessionHandlers as $handler) {
-            $handler->destroy($session_id);
+            $isDestroyed = $handler->destroy($session_id) && $isDestroyed;
         }
+
+        return $isDestroyed;
     }
 
-    public function gc($maxlifetime)
+    public function gc($maxlifetime): int|false
     {
+        $total = 0;
         foreach ($this->sessionHandlers as $handler) {
-            $handler->gc($maxlifetime);
+            $deleted = $handler->gc($maxlifetime);
+            if ($deleted !== false) {
+                $total += $deleted;
+            }
         }
+
+        return $total;
     }
 
 }

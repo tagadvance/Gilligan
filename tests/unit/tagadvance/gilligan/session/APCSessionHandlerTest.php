@@ -50,7 +50,7 @@ class APCSessionHandlerTest extends TestCase
     {
         $this->handler->write(self::SESSION_ID, 'foo');
         $result = $this->handler->gc($maxLifetime = 0);
-        $this->assertTrue($result);
+        $this->assertSame($expected = 0, $result);
     }
 
     public function tearDown(): void

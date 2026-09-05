@@ -35,17 +35,17 @@ class APCSessionHandler implements \SessionHandlerInterface
         return $this->prefix . $id;
     }
 
-    public function open($savePath, $name)
+    public function open($savePath, $name): bool
     {
         return true;
     }
 
-    public function close()
+    public function close(): bool
     {
         return true;
     }
 
-    public function read($id)
+    public function read($id): string|false
     {
         $key = $this->createKey($id);
         if (isset($this->apc->$key)) {
@@ -57,7 +57,7 @@ class APCSessionHandler implements \SessionHandlerInterface
         return '';
     }
 
-    public function write($id, $data)
+    public function write($id, $data): bool
     {
         $key = $this->createKey($id);
         if (isset($this->apc->$key)) {
@@ -73,12 +73,16 @@ class APCSessionHandler implements \SessionHandlerInterface
         }
 
         $this->apc->$key = $entry;
+
+        return true;
     }
 
-    public function destroy($id)
+    public function destroy($id): bool
     {
         $key = $this->createKey($id);
         unset($this->apc->$key);
+
+        return true;
     }
 
     /**
@@ -87,7 +91,7 @@ class APCSessionHandler implements \SessionHandlerInterface
      * {@inheritdoc}
      * @see SessionHandlerInterface::gc()
      */
-    public function gc($maxLifetime)
+    public function gc($maxLifetime): int|false
     {
         // $lifetime = get_cfg_var('session.gc_maxlifetime');
 
@@ -101,7 +105,7 @@ class APCSessionHandler implements \SessionHandlerInterface
         //     }
         // }
 
-        return true;
+        return 0;
     }
 
 }

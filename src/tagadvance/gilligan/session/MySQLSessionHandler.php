@@ -104,22 +104,17 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return false;
     }
 
-    public function __destruct()
-    {
-        unset($pdo, $this->options);
-    }
-
-    public function open($savePath, $name)
+    public function open($savePath, $name): bool
     {
         return true;
     }
 
-    public function close()
+    public function close(): bool
     {
         return true;
     }
 
-    public function read($session_id)
+    public function read($session_id): string|false
     {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
@@ -158,7 +153,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         }
     }
 
-    public function write($id, $data)
+    public function write($id, $data): bool
     {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
@@ -172,7 +167,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return $statement->execute();
     }
 
-    public function destroy($id)
+    public function destroy($id): bool
     {
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
@@ -190,17 +185,21 @@ class MySQLSessionHandler implements \SessionHandlerInterface
         return $statement->execute();
     }
 
-    public function gc($maxLifetime)
+    public function gc($maxLifetime): int|false
     {
         if ($this->isOptionSelected(self::DO_NOTHING_ON_DESTROY)) {
-            return true;
+            return 0;
         }
 
         $this->initialize();
         $pdo = $this->pdoSupplier->getPDO();
         $sql = 'DELETE FROM `sessions` WHERE `expiration_time` < NOW()';
         $statement = $pdo->prepare($sql);
-        return $statement->execute();
+        if (! $statement->execute()) {
+            return false;
+        }
+
+        return $statement->rowCount();
     }
 
     private function isOptionSelected(int $option)
