@@ -174,7 +174,7 @@ class MySQLSessionHandler implements \SessionHandlerInterface
      * bound as an INTERVAL of 0 SECOND, expiring every session as it was
      * written.
      */
-    protected function getMaxLifetime(): int
+    public function getMaxLifetime(): int
     {
         return (int) ini_get('session.gc_maxlifetime') ?: 1440;
     }

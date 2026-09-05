@@ -41,11 +41,6 @@ class MySQLSessionHandlerLifetimeTest extends TestCase
     {
         $supplier = $this->createStub(PDOSupplier::class);
 
-        return new class ($supplier, 'localhost') extends MySQLSessionHandler {
-            public function getMaxLifetime(): int
-            {
-                return parent::getMaxLifetime();
-            }
-        };
+        return new MySQLSessionHandler($supplier, 'localhost');
     }
 }
