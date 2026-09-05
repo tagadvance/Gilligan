@@ -2,6 +2,7 @@
 
 namespace tagadvance\gilligan\base;
 
+use tagadvance\gilligan\text\StringClass;
 use tagadvance\gilligan\time\SystemTimeProvider;
 
 /**
@@ -50,7 +51,7 @@ class System
     public static function isCGI()
     {
         $sapi = php_sapi_name();
-        return String::valueOf($sapi)->startsWith('cgi');
+        return StringClass::valueOf($sapi)->startsWith('cgi');
     }
 
     private function __construct() {}
