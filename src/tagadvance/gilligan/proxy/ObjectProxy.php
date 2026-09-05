@@ -98,9 +98,8 @@ class ObjectProxy
             $this->value,
             $name,
         ];
-        $arguments = func_get_args();
         try {
-            return call_user_func($function, $arguments);
+            return call_user_func_array($function, $arguments);
         } finally {
             $when = System::currentTimeMillis();
             $event = new ObjectCallEvent($this->value, $when, $name, $arguments);

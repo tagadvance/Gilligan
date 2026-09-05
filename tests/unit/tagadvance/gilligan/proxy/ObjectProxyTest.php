@@ -69,6 +69,30 @@ class ObjectProxyTest extends TestCase
         $proxy->foo();
     }
 
+    public function testCallForwardsArgumentsIndividually()
+    {
+        $source = new class extends \stdClass {
+            public function concat(string $a, string $b): string
+            {
+                return $a . $b;
+            }
+        };
+        $proxy = new ObjectProxy($source);
+
+        $observer = new class extends ObjectObserverAdapter {
+            public array $arguments = [];
+
+            public function onCall(ObjectCallEvent $event)
+            {
+                $this->arguments = $event->getArguments();
+            }
+        };
+        $proxy->addObjectObserver($observer);
+
+        $this->assertEquals('ab', $actual = $proxy->concat('a', 'b'));
+        $this->assertEquals(['a', 'b'], $actual = $observer->arguments);
+    }
+
     public function testInvoke()
     {
         $source = new class extends \stdClass {
