@@ -26,6 +26,12 @@ class ReflectionToolsTest extends TestCase
         ];
     }
 
+    public function testCamelCaseToUnderscoreIgnoresLeadingCapital()
+    {
+        $actual = ReflectionTools::camelCaseToUnderscore('StrToUpper');
+        $this->assertEquals($expected = 'str_to_upper', $actual);
+    }
+
     #[DataProvider('camelCaseNames')]
     public function testUnderscoreToCamelCase(string $expected, string $underscored)
     {

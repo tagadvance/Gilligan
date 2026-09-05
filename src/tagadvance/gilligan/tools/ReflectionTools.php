@@ -13,7 +13,7 @@ class ReflectionTools
      */
     public static function camelCaseToUnderscore($string)
     {
-        $tokens = preg_split('/(?=[A-Z])/', $string);
+        $tokens = preg_split('/(?=[A-Z])/', $string, $limit = -1, PREG_SPLIT_NO_EMPTY);
         array_walk($tokens, function (&$token) {
             $token = strtolower($token);
         });
