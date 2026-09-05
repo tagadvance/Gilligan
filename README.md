@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/tagadvance/Gilligan.svg?branch=master)](https://travis-ci.org/tagadvance/Gilligan)
+[![CI](https://github.com/tagadvance/Gilligan/actions/workflows/ci.yml/badge.svg)](https://github.com/tagadvance/Gilligan/actions/workflows/ci.yml)
+[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.4-8892BF)](https://www.php.net/supported-versions.php)
+[![License](https://img.shields.io/github/license/tagadvance/Gilligan)](LICENSE)
 
 # Gilligan
 
@@ -57,3 +59,7 @@ session_start();
 ```php
 $true = StringClass::valueOf('abcxyz')->startsWith('abc');
 ```
+
+## Support
+
+If you find Gilligan useful, you can [sponsor its development](https://github.com/sponsors/tagadvance).
