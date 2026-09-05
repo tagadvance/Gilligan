@@ -21,16 +21,16 @@ class CascadeSessionHandlerTest extends TestCase
 
     public function testConstructor()
     {
-        $handler = $this->getMockBuilder(\SessionHandlerInterface::class)->getMock();
+        $handler = $this->createStub(\SessionHandlerInterface::class);
         $handler = new CascadeSessionHandler($handler);
         $this->assertTrue(true);
     }
 
     public function testRead()
     {
-        $handler1 = $handler = $this->getMockBuilder(\SessionHandlerInterface::class)->getMock();
+        $handler1 = $handler = $this->createStub(\SessionHandlerInterface::class);
         $handler1->method('read')->willReturn($expected = 'foo');
-        $handler2 = $handler = $this->getMockBuilder(\SessionHandlerInterface::class)->getMock();
+        $handler2 = $handler = $this->createStub(\SessionHandlerInterface::class);
         $handler2->method('read')->willReturn('bar');
 
         $handler = new CascadeSessionHandler($handler1, $handler2);
@@ -40,9 +40,9 @@ class CascadeSessionHandlerTest extends TestCase
 
     public function testReadFallThrough()
     {
-        $handler1 = $handler = $this->getMockBuilder(\SessionHandlerInterface::class)->getMock();
+        $handler1 = $handler = $this->createStub(\SessionHandlerInterface::class);
         $handler1->method('read')->willReturn('');
-        $handler2 = $handler = $this->getMockBuilder(\SessionHandlerInterface::class)->getMock();
+        $handler2 = $handler = $this->createStub(\SessionHandlerInterface::class);
         $handler2->method('read')->willReturn($expected = 'bar');
 
         $handler = new CascadeSessionHandler($handler1, $handler2);
