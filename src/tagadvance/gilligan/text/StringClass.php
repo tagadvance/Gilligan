@@ -261,7 +261,7 @@ class StringClass
                 break;
             }
             $string = substr_replace($string, $new, $position, $oldLength);
-            $offset += $position + $newLength;
+            $offset = $position + $newLength;
         }
         return new self($string);
     }

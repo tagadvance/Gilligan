@@ -381,4 +381,18 @@ class StringClassTest extends TestCase
         $this->assertEquals($randomStrings, $unique);
     }
 
+    public function testReplaceEveryOccurrenceWhenThereAreMoreThanTwo()
+    {
+        $string = new StringClass('a.b.c.d');
+        $actual = $string->replace('.', '-');
+        $this->assertEquals('a-b-c-d', $actual());
+    }
+
+    public function testReplaceAdjacentOccurrences()
+    {
+        $string = new StringClass('aaa');
+        $actual = $string->replace('a', 'b');
+        $this->assertEquals('bbb', $actual());
+    }
+
 }
