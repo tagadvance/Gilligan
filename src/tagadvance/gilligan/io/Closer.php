@@ -8,7 +8,7 @@ namespace tagadvance\gilligan\io;
  */
 final class Closer
 {
-    private function __consruct() {}
+    private function __construct() {}
 
     public static function close(?Closeable $closeable = null)
     {
