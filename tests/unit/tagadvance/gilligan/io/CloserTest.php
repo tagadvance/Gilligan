@@ -15,10 +15,11 @@ class CloserTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testCloserCannotBeInstantiated()
+    public function testCloserHasAPrivateConstructor()
     {
-        $this->expectException(\Error::class);
-        new Closer();
+        $constructor = (new \ReflectionClass(Closer::class))->getConstructor();
+        $this->assertNotNull($constructor);
+        $this->assertTrue($constructor->isPrivate());
     }
 
 }
