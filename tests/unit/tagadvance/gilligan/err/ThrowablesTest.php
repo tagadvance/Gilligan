@@ -43,9 +43,10 @@ class ThrowablesTest extends TestCase
 
     public function testConstructorIsPrivate()
     {
-        $this->expectException(\Error::class);
+        $constructor = (new \ReflectionClass(Throwables::class))->getConstructor();
 
-        new Throwables();
+        $this->assertNotNull($constructor);
+        $this->assertTrue($constructor->isPrivate());
     }
 
 }
