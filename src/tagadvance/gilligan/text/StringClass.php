@@ -203,11 +203,10 @@ class StringClass
     /**
      *
      * @return bool
-     * @see http://php.net/manual/en/function.empty.php
      */
     public function isEmpty(): bool
     {
-        return empty($this->string);
+        return $this->string === '';
     }
 
     /**

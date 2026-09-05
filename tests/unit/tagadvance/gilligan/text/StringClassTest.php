@@ -416,4 +416,11 @@ class StringClassTest extends TestCase
         $this->assertEquals(['a,b,c'], $actual);
     }
 
+    public function testZeroIsNotEmpty()
+    {
+        $string = new StringClass('0');
+        $actual = $string->isEmpty();
+        $this->assertFalse($actual);
+    }
+
 }
