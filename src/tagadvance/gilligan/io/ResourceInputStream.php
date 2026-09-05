@@ -2,10 +2,17 @@
 
 namespace tagadvance\gilligan\io;
 
+/**
+ * An {@link InputStream} over an already-open PHP stream resource.
+ * It takes ownership: {@link self::close()} fcloses the handle the caller passed in.
+ */
 class ResourceInputStream implements InputStream
 {
     protected $handle;
 
+    /**
+     * @throws \InvalidArgumentException when <code>$handle</code> is not a resource
+     */
     public function __construct(/* resource */ $handle)
     {
         if (! is_resource($handle)) {
@@ -34,9 +41,10 @@ class ResourceInputStream implements InputStream
      * @param integer $offset
      *        	Seek to the specified offset before reading. If this number is
      *        	negative, no seeking will occur and reading will start from
-     *        	the current position.
-     * @return string
-     * @throws IOException
+     *        	the current position. Note the default of 0 seeks back to the
+     *        	start, unlike stream_get_contents(), whose own default of -1
+     *        	reads on from wherever the stream stands.
+     * @throws IOException when the read fails
      * @see http://php.net/manual/en/function.stream-get-contents.php
      */
     public function getContents(int $maxLength = -1, int $offset = 0): string

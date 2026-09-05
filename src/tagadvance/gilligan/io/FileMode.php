@@ -3,6 +3,9 @@
 namespace tagadvance\gilligan\io;
 
 /**
+ * The mode strings fopen() accepts, under names that say what they do.
+ * None of them carries the <code>b</code> flag, so a stream opened with one of these is subject
+ * to line-ending translation on Windows.
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  * @see http://www.php.net/manual/en/function.fopen.php

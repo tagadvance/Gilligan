@@ -2,10 +2,18 @@
 
 namespace tagadvance\gilligan\io;
 
+/**
+ * An {@link OutputStream} over an already-open PHP stream resource.
+ * It takes ownership: {@link self::close()} fcloses the handle the caller passed in.
+ */
 class ResourceOutputStream implements OutputStream
 {
     protected $handle;
 
+    /**
+     * A stream over <code>php://output</code>, which passes through PHP's output buffering
+     * rather than going straight to a file descriptor.
+     */
     public static function createDefaultOutputStream()
     {
         $handle = fopen('php://output', FileMode::WRITE_ONLY_APPEND);
@@ -13,8 +21,8 @@ class ResourceOutputStream implements OutputStream
     }
 
     /**
-     *
      * @param resource $handle
+     * @throws \InvalidArgumentException when <code>$handle</code> is not a resource
      */
     public function __construct(/* resource */ $handle)
     {

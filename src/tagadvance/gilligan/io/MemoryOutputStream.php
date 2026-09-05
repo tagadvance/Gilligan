@@ -2,6 +2,11 @@
 
 namespace tagadvance\gilligan\io;
 
+/**
+ * A <code>php://memory</code> sink that can be read back, which is what makes it useful for
+ * capturing output under test.
+ * Nothing survives the object: the buffer goes when the handle is closed.
+ */
 class MemoryOutputStream extends ResourceOutputStream
 {
     public function __construct()
@@ -19,9 +24,11 @@ class MemoryOutputStream extends ResourceOutputStream
      * @param integer $offset
      *        	Seek to the specified offset before reading. If this number is
      *        	negative, no seeking will occur and reading will start from
-     *        	the current position.
+     *        	the current position. Note the default of 0 seeks back to the
+     *        	start, which is what lets everything written so far be read
+     *        	straight back.
      * @return string
-     * @throws IOException
+     * @throws IOException when the read fails
      * @see http://php.net/manual/en/function.stream-get-contents.php
      */
     public function getContents(int $maxLength = -1, int $offset = 0)
