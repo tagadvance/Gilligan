@@ -57,3 +57,6 @@ local.properties
 
 # PHPUnit
 .phpunit.*
+
+# JetBrains
+/.idea/
