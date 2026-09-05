@@ -22,7 +22,7 @@ class ImmutableArray implements \ArrayAccess
         return $this->offsetGet($name);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->array[$offset];
     }
@@ -32,7 +32,7 @@ class ImmutableArray implements \ArrayAccess
         $this->offsetSet($name, $value);
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new UnsupportedOperationException('immutable');
     }
@@ -42,7 +42,7 @@ class ImmutableArray implements \ArrayAccess
         return $this->offsetExists($name);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->array[$offset]);
     }
@@ -52,7 +52,7 @@ class ImmutableArray implements \ArrayAccess
         $this->offsetUnset($name);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new UnsupportedOperationException('immutable');
     }

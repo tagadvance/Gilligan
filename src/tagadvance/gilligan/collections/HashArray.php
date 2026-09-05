@@ -30,26 +30,26 @@ class HashArray implements \ArrayAccess
 
     public function __construct() {}
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         $hash = self::createHash($offset);
         return $this->values[$hash];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $hash = self::createHash($offset);
         $this->keys[$hash] = $offset;
         $this->values[$hash] = $value;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         $hash = self::createHash($offset);
         return isset($this->keys[$hash]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         $hash = self::createHash($offset);
         unset($this->keys[$hash], $this->values[$hash]);

@@ -23,7 +23,7 @@ class ArrayProxy implements \ArrayAccess, \Serializable
         $this->array[$name] = $value;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->array[$offset] = $value;
     }
@@ -33,7 +33,7 @@ class ArrayProxy implements \ArrayAccess, \Serializable
         return $this->array[$name];
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->array[$offset];
     }
@@ -43,7 +43,7 @@ class ArrayProxy implements \ArrayAccess, \Serializable
         return isset($this->array[$name]);
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return isset($this->array[$offset]);
     }
@@ -53,7 +53,7 @@ class ArrayProxy implements \ArrayAccess, \Serializable
         unset($this->array[$name]);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->array[$offset]);
     }
