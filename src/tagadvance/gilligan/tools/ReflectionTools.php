@@ -2,14 +2,17 @@
 
 namespace tagadvance\gilligan\tools;
 
+/**
+ * Converts between the two naming conventions PHP itself mixes — camelCase methods against
+ * snake_case functions — which is what lets {@link FluentBuilder} accept either spelling.
+ */
 class ReflectionTools
 {
     private function __construct() {}
 
     /**
-     *
-     * @param string $string
-     * @return string
+     * Breaks before every capital, so digits stay attached to the word they follow and
+     * base64Encode becomes base64_encode.
      */
     public static function camelCaseToUnderscore($string)
     {
@@ -22,10 +25,8 @@ class ReflectionTools
     }
 
     /**
-     *
-     * @param string $string
-     * @param boolean $capitaliseFirstCharacter
-     * @return string
+     * @param boolean $capitaliseFirstCharacter true for StudlyCase rather than camelCase; on the
+     *        empty string this raises an Error rather than returning it unchanged
      * @see https://gist.github.com/paulferrett/8141290
      */
     public static function underscoreToCamelCase($string, $capitaliseFirstCharacter = false)

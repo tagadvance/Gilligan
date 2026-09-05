@@ -20,6 +20,13 @@ namespace tagadvance\gilligan\tools;
  */
 class UUID
 {
+    /**
+     * Name-based and MD5-derived, so the same namespace and name always give the same UUID;
+     * prefer {@link self::v5()}, which RFC 4122 recommends over this one.
+     *
+     * @param string $namespace another UUID, with or without braces and hyphens
+     * @return string|false false when $namespace is not UUID-shaped
+     */
     public static function v3(string $namespace, string $name)
     {
         if (! self::is_valid($namespace)) {
@@ -62,6 +69,12 @@ class UUID
         return sprintf('%08s-%04s-%04x-%04x-%12s', $time_low, $time_mid, $time_hi_and_version, $clk_seq_hi_res, $node);
     }
 
+    /**
+     * Drawn from mt_rand(), which is not cryptographically secure — do not use these as session
+     * ids, password-reset tokens or anything else that must be unguessable.
+     *
+     * @return string a random UUID
+     */
     public static function v4()
     {
         // 32 bits for "time_low"
@@ -88,6 +101,12 @@ class UUID
         return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x', $time_low1, $time_low2, $time_mid, $time_hi_and_version, $clk_seq_hi_res, $node1, $node2, $node3);
     }
 
+    /**
+     * Name-based and SHA-1 derived, so the same namespace and name always give the same UUID.
+     *
+     * @param string $namespace another UUID, with or without braces and hyphens
+     * @return string|false false when $namespace is not UUID-shaped
+     */
     public static function v5(string $namespace, string $name)
     {
         if (! self::is_valid($namespace)) {
@@ -128,6 +147,10 @@ class UUID
         return sprintf('%08s-%04s-%04x-%04x-%12s', $time_low, $time_mid, $time_hi_and_version, $clk_seq_hi_res, $node);
     }
 
+    /**
+     * @return bool true when the argument has the shape of a UUID, hyphens and surrounding
+     *         braces both optional; the version and variant nibbles are not checked
+     */
     public static function is_valid($uuid)
     {
         $pattern = '/^\{?[0-9a-f]{8}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{4}\-?[0-9a-f]{12}\}?$/i';

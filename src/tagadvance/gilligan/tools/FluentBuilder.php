@@ -9,8 +9,10 @@ use tagadvance\gilligan\base\Blank;
  * This class is designed as a builder with a fluent interface to simplify the invocation of functions which are not otherwise chainable.
  * <code>__call()</code> has been overridden to call functions with <code>$value</code> as the first argument.
  * <code>__invoke()</code> has been overriden to return <code>$value</code>.
+ * The <code>explicit</code> prefix is honoured by <code>__call()</code> only, never by
+ * <code>__callStatic()</code>.
  * <code>
- * $float = FluentBuilder::explicitBcdiv(5, 3, $scale = 2);
+ * $float = FluentBuilder::valueOf(5)->explicitBcdiv(Blank::getInstance(), 3, $scale = 2);
  * $oneThirdFloored = FluentBuilder::valueOf(1/3)->floor();
  * $isPiInfinite = FluentBuilder::pi()->isInfinite();
  * $alphabet = FluentBuilder::valueOf('abcdef')->substr($start =
@@ -37,11 +39,11 @@ class FluentBuilder
     }
 
     /**
+     * Prefixing the name with <code>explicit</code> stops the value being prepended and instead
+     * substitutes it for whichever argument is a {@link Blank}.
      *
-     * @param string $name
-     * @param array $arguments
-     * @throws \BadMethodCallException
-     * @return self
+     * @throws \BadMethodCallException when no function exists under that name or its
+     *         snake_case form
      */
     public function __call($name, array $arguments): self
     {
@@ -69,11 +71,11 @@ class FluentBuilder
     }
 
     /**
+     * The chain's starting point: it calls the function with exactly the arguments given, since
+     * there is no value yet to prepend, and does not honour the <code>explicit</code> prefix.
      *
-     * @param string $name
-     * @param array $arguments
-     * @throws \BadMethodCallException
-     * @return self
+     * @throws \BadMethodCallException when no function exists under that name or its
+     *         snake_case form
      */
     public static function __callStatic($name, array $arguments): self
     {
@@ -88,6 +90,9 @@ class FluentBuilder
         return new FluentBuilder($result);
     }
 
+    /**
+     * Ends the chain, handing back the wrapped value.
+     */
     public function __invoke()
     {
         return $this->value;
