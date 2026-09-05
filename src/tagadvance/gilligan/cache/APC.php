@@ -102,7 +102,7 @@ class APC implements Cache
                 $value = date($format, $value);
             }
             if (StringClass::valueOf($name)->startsWith('mem_')) {
-                $value = $formatter->format($value);
+                $value = $formatter->format($value, $decimals = 2);
             }
         }
     }

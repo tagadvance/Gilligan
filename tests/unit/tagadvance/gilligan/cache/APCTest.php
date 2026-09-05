@@ -3,6 +3,7 @@
 namespace tagadvance\gilligan\cache;
 
 use PHPUnit\Framework\TestCase;
+use tagadvance\gilligan\text\ByteCountFormatter;
 
 /**
  * @author Tag <tagadvance+gilligan@gmail.com>
@@ -57,6 +58,21 @@ class APCTest extends TestCase
 
         $this->assertStringContainsString("'cache_list' => ", $actual);
         $this->assertStringContainsString("'info' => 'foo'", $actual);
+    }
+
+    public function testToHumanReadableStringPassesDecimalsToFormatter()
+    {
+        $this->apc->foo = 'bar';
+
+        $formatter = new class implements ByteCountFormatter {
+            public function format(int $byteCount, int $decimals): string
+            {
+                return "$byteCount:$decimals";
+            }
+        };
+        $actual = $this->apc->toHumanReadableString($format = 'c', $formatter);
+
+        $this->assertMatchesRegularExpression("/'mem_size' => '\\d+:2'/", $actual);
     }
 
     public function tearDown(): void
