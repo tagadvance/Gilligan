@@ -9,7 +9,7 @@ namespace tagadvance\gilligan\err;
  */
 final class Throwables
 {
-    private function __consruct() {}
+    private function __construct() {}
 
     /**
      *

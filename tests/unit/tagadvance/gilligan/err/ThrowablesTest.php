@@ -41,4 +41,11 @@ class ThrowablesTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testConstructorIsPrivate()
+    {
+        $this->expectException(\Error::class);
+
+        new Throwables();
+    }
+
 }
