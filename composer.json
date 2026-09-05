@@ -1,8 +1,8 @@
 {
 	"name" : "tagadvance/gilligan",
-	"description" : "...",
-	"type" : "project",
-	"keywords": [],
+	"description" : "A collection of general-purpose PHP utilities in the spirit of Apache Commons and Guava.",
+	"type" : "library",
+	"keywords": ["utilities", "commons", "collections", "io", "session", "proxy"],
 	"license" : "MIT",
 	"authors" : [{
 			"name" : "Tag",
