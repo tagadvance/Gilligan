@@ -14,11 +14,10 @@ interface ErrorHandler
      * @param string $errstr
      * @param string $errfile
      * @param int $errline
-     * @param array $errcontext
      * @return boolean <code>true</code> to exit or <code>false</false> to
      *         continue
-     * @see http://www.php.net/manual/en/function.set-exception-handler.php
+     * @see http://www.php.net/manual/en/function.set-error-handler.php
      */
-    public function handleError($errno, $errstr, $errfile, $errline, $errcontext);
+    public function handleError($errno, $errstr, $errfile, $errline);
 
 }
