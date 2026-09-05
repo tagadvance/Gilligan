@@ -6,10 +6,6 @@ parameters:
     paths:
         - src
         - tests
-    excludePaths:
-        # Declares namespace tagadvance\gilligan\util, so PSR-4 cannot load it
-        # and nothing in the library references it. Broken and unfinished.
-        - src/tagadvance/gilligan/time/TimeUnit.php
     ignoreErrors:
         # FluentBuilder dispatches every static call through __callStatic().
         -
