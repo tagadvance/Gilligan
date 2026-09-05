@@ -49,6 +49,16 @@ class APCTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
+    public function testToHumanReadableStringIncludesCacheList()
+    {
+        $this->apc->foo = 'bar';
+
+        $actual = $this->apc->__toString();
+
+        $this->assertStringContainsString("'cache_list' => ", $actual);
+        $this->assertStringContainsString("'info' => 'foo'", $actual);
+    }
+
     public function tearDown(): void
     {
         $this->apc?->clear();

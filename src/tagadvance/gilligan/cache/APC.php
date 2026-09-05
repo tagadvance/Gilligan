@@ -84,7 +84,7 @@ class APC implements Cache
             $formatter = new HumanReadableByteCountFormatter();
         }
 
-        $user_info = apcu_cache_info(self::CACHE_TYPE);
+        $user_info = apcu_cache_info($limited = false);
         if ($user_info !== false) {
             self::replaceFields($user_info, $format, $formatter);
             foreach ($user_info['cache_list'] as &$entry) {
