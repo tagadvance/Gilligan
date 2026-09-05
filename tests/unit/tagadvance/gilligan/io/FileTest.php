@@ -42,4 +42,26 @@ class FileTest extends TestCase
         $this->assertNotNull($file);
     }
 
+    public function testTouchCreatesFile()
+    {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'gilligan_touch_' . uniqid();
+        $file = new File($path);
+        try {
+            $this->assertTrue($file->touch());
+            $this->assertFileExists($path);
+        } finally {
+            @unlink($path);
+        }
+    }
+
+    public function testTouchReturnsFalseWhenFileExists()
+    {
+        $file = File::createTemporaryFile('gilligan_touch');
+        try {
+            $this->assertFalse($file->touch());
+        } finally {
+            @unlink($file->getPathname());
+        }
+    }
+
 }

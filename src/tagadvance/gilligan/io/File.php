@@ -37,10 +37,10 @@ class File extends \SplFileInfo
      */
     public function touch(): bool
     {
-        if ($this->exists()) {
+        if (file_exists($this->fileName)) {
             return false;
         }
-        return touch($this->filename);
+        return touch($this->fileName);
     }
 
     public function delete()
