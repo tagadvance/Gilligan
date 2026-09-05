@@ -27,6 +27,12 @@ class FluentBuilderTest extends TestCase
         $this->assertEquals($expected, $actual = $alphabet());
     }
 
+    public function testImplicitUnderscoredFunctionName()
+    {
+        $encoded = FluentBuilder::valueOf('hello')->base64Encode();
+        $this->assertEquals($expected = base64_encode('hello'), $actual = $encoded());
+    }
+
     public function testStatic()
     {
         $expected = is_infinite(pi());

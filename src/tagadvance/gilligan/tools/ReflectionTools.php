@@ -17,11 +17,8 @@ class ReflectionTools
         array_walk($tokens, function (&$token) {
             $token = strtolower($token);
         });
-        $string = implode('_', $tokens);
-        // digits must be checked seperately to avoid matching single digits
-        // http://stackoverflow.com/a/1589535/625688
-        $string = preg_replace('/(\w)([0-9])/', '$1_$2', $string);
-        return $string;
+        // digits stay attached to the word they follow, e.g. base64Encode -> base64_encode
+        return implode('_', $tokens);
     }
 
     /**
