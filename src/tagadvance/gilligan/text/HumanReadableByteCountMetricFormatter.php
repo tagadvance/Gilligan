@@ -2,6 +2,9 @@
 
 namespace tagadvance\gilligan\text;
 
+/**
+ * Decimal scaling: 1000 to the step, with SI prefixes — kB, MB, GB — as disk vendors count.
+ */
 class HumanReadableByteCountMetricFormatter extends HumanReadableByteCountFormatter
 {
     public const UNIT = 1000;

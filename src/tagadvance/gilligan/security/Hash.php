@@ -2,6 +2,11 @@
 
 namespace tagadvance\gilligan\security;
 
+/**
+ * Named shortcuts for hash() over the four algorithms this library uses.
+ * These are unkeyed digests for identity and checksums only — use password_hash() for
+ * passwords and hash_hmac() for anything an attacker can influence.
+ */
 class Hash
 {
     public const ALGORITHM_MD5 = 'md5';

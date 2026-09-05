@@ -3,6 +3,7 @@
 namespace tagadvance\gilligan\text;
 
 /**
+ * The English ordinal suffix for a number: 1st, 2nd, 3rd, 4th.
  *
  * @deprecated use {@link NumberFormatter} if available (requires PECL intl >= 1.0.0)
  */
@@ -16,9 +17,8 @@ class Ordinal
     private function __construct() {}
 
     /**
-     *
-     * @param int $n
-     * @return string
+     * @return string one of {@link self::TH}, {@link self::ST}, {@link self::ND} or
+     *         {@link self::RD}; a negative $n always yields 'th', since the modulo goes negative
      * @see http://stackoverflow.com/a/3110033
      */
     public static function getSuffix(int $n): string

@@ -8,6 +8,9 @@ use tagadvance\gilligan\time\SystemTimeProvider;
 Extensions::getInstance()->requires('bcmath');
 
 /**
+ * Measures elapsed time against an injectable clock.
+ * Because that clock is wall-clock time, a system clock adjustment mid-measurement shows up in
+ * the result.
  *
  * @author Tag <tagadvance+gilligan@gmail.com>
  */
@@ -31,8 +34,9 @@ class Stopwatch
     }
 
     /**
-     * Start the stopwatch.
-     * @return self
+     * Start the stopwatch, discarding any measurement already in progress.
+     *
+     * @return self this, for chaining
      */
     public function start(): self
     {
@@ -40,6 +44,14 @@ class Stopwatch
         return $this;
     }
 
+    /**
+     * Reads the elapsed time without stopping the clock, so successive calls keep growing.
+     *
+     * @param int $decimals digits after the point; bcmath truncates rather than rounds, so
+     *        1.999s at 2 decimals reads 1.99
+     * @throws \BadMethodCallException when {@link self::start()} has not been called since the
+     *         last reset
+     */
     public function elapsedTimeInSeconds($decimals = 2): string
     {
         if ($this->start < 0) {
@@ -52,11 +64,19 @@ class Stopwatch
         return $secondsElapsed;
     }
 
+    /**
+     * Discards the measurement; {@link self::elapsedTimeInSeconds()} throws again until
+     * {@link self::start()} is called.
+     */
     public function stopAndReset()
     {
         $this->start = - 1;
     }
 
+    /**
+     * A stopwatch on the real clock, not yet started.
+     * It builds with <code>new self()</code>, so a subclass calling this gets a plain Stopwatch.
+     */
     final public static function create()
     {
         $timeProvider = new SystemTimeProvider();
