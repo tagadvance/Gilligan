@@ -22,15 +22,15 @@ namespace tagadvance\gilligan\base;
 final class Extensions
 {
     /**
-     *
-     * @var array
+     * @var string[]
      */
     private $installedExtensions;
 
     /**
+     * Takes the extension list rather than reading it, so a caller can check against a
+     * fabricated environment.
      *
-     * @param array $installedExtensions
-     * @see http://php.net/get_loaded_extensions
+     * @param string[] $installedExtensions extension names in the form get_loaded_extensions() returns
      */
     public function __construct(array $installedExtensions)
     {
@@ -62,8 +62,8 @@ final class Extensions
     }
 
     /**
-     *
-     * @return self
+     * The shared instance, built once from get_loaded_extensions(); extensions loaded
+     * afterwards are invisible to it.
      */
     public static function getInstance(): self
     {

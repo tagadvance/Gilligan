@@ -7,6 +7,7 @@ use tagadvance\gilligan\net\IPv4Address;
 /**
  * The sole purpose of this class is to aid my IDE's code assist.
  * Most of the documentation was shamelessly coped from {@link http://php.net/manual/en/reserved.variables.server.php $_SERVER} (with minor changes).
+ * Every accessor reads its key unconditionally, so a variable the SAPI did not set — which under CLI is most of them — warns and yields null rather than throwing.
  *
  * @author Tag Spilman <tagadvance+gilligan@gmail.com>
  * @see http://php.net/manual/en/reserved.variables.server.php
@@ -15,12 +16,19 @@ class MetaServer
 {
     private $server;
 
+    /**
+     * Snapshots <code>$_SERVER</code> as it stands now; later writes to the superglobal are
+     * not reflected.
+     */
     // FIXME: many variables are not set in CLI
     public static function create()
     {
         return new self($_SERVER);
     }
 
+    /**
+     * @param array<string, mixed> $server a <code>$_SERVER</code>-shaped map; keys are read verbatim
+     */
     public function __construct(array $server)
     {
         $this->server = $server;
@@ -51,7 +59,8 @@ class MetaServer
      * <strong>Note:</strong> The first argument <code>$argv[0]</code> is always
      * the name that was used to run the script (if run on the command line).
      *
-     * @return array
+     * Terminates with a fatal <code>E_USER_ERROR</code> when <code>register_argc_argv</code>
+     * is disabled — an error level PHP 8.4 deprecates and 9.0 removes.
      */
     public function args()
     {
@@ -273,8 +282,9 @@ class MetaServer
     }
 
     /**
-     * Set to a non-empty value if the script was queried through the HTTPS protocol.
-     * @return bool
+     * True when the request arrived over HTTPS.
+     * IIS sets the variable to the string <code>off</code> instead of clearing it, which
+     * counts as false.
      */
     public function https(): bool
     {
@@ -285,7 +295,7 @@ class MetaServer
     }
 
     /**
-     * alias of Server::https() // TODO: inline link?
+     * Alias of {@link self::https()}.
      */
     public function isSecure()
     {
