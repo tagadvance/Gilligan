@@ -59,14 +59,18 @@ class CascadeSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * Takes the first non-empty answer, so a session whose stored data is '' or '0' reads as a
-     * miss and the search carries on down the chain.
+     * Returns the first handler's stored data, skipping any handler that has none or that
+     * failed.
+     *
+     * An empty string cannot be told apart from a miss: SessionHandlerInterface specifies
+     * '' as the return for a session with no data, and the handlers here return it for a
+     * key that is absent, so the search continues past it either way.
      */
     public function read($session_id): string|false
     {
         foreach ($this->sessionHandlers as $handler) {
             $read = $handler->read($session_id);
-            if (! empty($read)) {
+            if ($read !== false && $read !== '') {
                 return $read;
             }
         }
