@@ -56,3 +56,14 @@ jobs:
           mysql -uroot -proot -e "GRANT ALL PRIVILEGES ON \`phpunit\`.* TO 'phpunit'@'localhost';"
 
       - run: vendor/bin/phpunit
+
+  # Single required status check for the branch ruleset, so the matrix can
+  # change without editing the ruleset.
+  ci:
+    name: CI
+    needs: [lint, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
